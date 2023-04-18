@@ -34,13 +34,13 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True)
     role = models.CharField(choices=UserRole.choices, max_length=15, default=UserRole.user)
-    first_name = models.CharField(max_length=255, null=False, blank=False, verbose_name='Имя')
-    last_name = models.CharField(max_length=255, null=False, blank=False, verbose_name='Фамилия')
+    first_name = models.CharField(max_length=255, null=True, blank=False, verbose_name='Имя')
+    last_name = models.CharField(max_length=255, null=True, blank=False, verbose_name='Фамилия')
     phone = models.CharField(max_length=30, unique=True, null=True, verbose_name='Номер телефона')
-    city = models.CharField(max_length=255, null=False, blank=False, verbose_name='Город проживания')
-    gender = models.CharField(max_length=1, null=False, blank=True, verbose_name='Пол')
-    birthday = models.DateField(verbose_name='День рождения')
-    description = models.TextField(verbose_name='Описание')
+    city = models.CharField(max_length=255, null=True, blank=False, verbose_name='Город проживания')
+    gender = models.CharField(max_length=1, null=True, blank=True, verbose_name='Пол')
+    birthday = models.DateField(verbose_name='День рождения', null=True, blank=True)
+    description = models.TextField(verbose_name='Описание', null=True, blank=True)
 
     @property
     def is_staff(self):
