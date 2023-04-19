@@ -1,5 +1,56 @@
-<script setup>
-// import RegistrationForm from '../components/forms/RegistrationForm.vue'
+<script>
+import {register_user} from "@/services/api";
+import RegisterButton from "@/components/buttons/RegisterButton.vue";
+
+export default {
+    name: "RegistrationView",
+    components: {RegisterButton},
+    data() {
+        return {
+            isPassword: true,
+            message: '',
+            form: {
+                first_name: '',
+                last_name: '',
+                city: '',
+                email: '',
+                password: null,
+                valid: null,
+                submitted: null,
+                sent: false,
+                isSuccess: null,
+                errorsCount: 0
+            },
+            validators: {
+                required: value => !!value || 'Поле обязательно для заполнения',
+            }
+        }
+    },
+
+    methods: {
+        onValidate() {
+            this.form.sent = false
+            this.form.submitted = this.form.errorsCount === 0
+        },
+        async submitForm() {
+            const formData = {
+                first_name: this.form.first_name,
+                last_name: this.form.last_name,
+                city: this.form.city,
+                email: this.form.email,
+                password: this.form.password,
+            };
+            const response = await register_user(formData);
+            this.message = response.message;
+            if (response.status === 'ok') {
+                this.form.isSuccess = true;
+                setTimeout(this.$router.push, 1500, {name: "login"})
+            } else {
+                this.form.isSuccess = false;
+            }
+        }
+    }
+}
 </script>
 
 <template>
@@ -83,16 +134,10 @@
             </w-input>
 
             <w-flex wrap align-center justify-end class="mt4">
-
-                <w-button md
-                          color="white"
-                          bg-color="indigo-dark6"
-                          type="submit"
-                          :disabled="form.valid === false"
-                          class="my5">
-                    Зарегистрироваться
-                </w-button>
-
+                <RegisterButton
+                    :disabled="form.valid === false"
+                    class="my5"
+                />
                 <w-button
                         text
                         type="reset"
@@ -107,59 +152,6 @@
     </w-card>
     </div>
 </template>
-
-<script>
-import {register_user} from "@/services/api";
-
-export default {
-    name: "RegistrationView",
-    data() {
-        return {
-            isPassword: true,
-            message: '',
-            form: {
-                first_name: '',
-                last_name: '',
-                city: '',
-                email: '',
-                password: null,
-                valid: null,
-                submitted: null,
-                sent: false,
-                isSuccess: null,
-                errorsCount: 0
-            },
-            validators: {
-                required: value => !!value || 'Поле обязательно для заполнения',
-            }
-        }
-    },
-
-    methods: {
-        onValidate() {
-            this.form.sent = false
-            this.form.submitted = this.form.errorsCount === 0
-        },
-        async submitForm() {
-            const formData = {
-                first_name: this.form.first_name,
-                last_name: this.form.last_name,
-                city: this.form.city,
-                email: this.form.email,
-                password: this.form.password,
-            };
-            const response = await register_user(formData);
-            this.message = response.message;
-            if (response.status === 'ok') {
-                this.form.isSuccess = true;
-                setTimeout(this.$router.push, 1500, {name: "login"})
-            } else {
-                this.form.isSuccess = false;
-            }
-        }
-    }
-}
-</script>
 
 <style>
 .w-card__content {
