@@ -17,9 +17,18 @@ def registration_view(request):
     serializer = RegistrationSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
-        return Response({'email': user.email})
-    else:
-        return Response({'error': 'dont register'})
+        if user:
+            return Response(
+                {'status': 'ok',
+                 'message': 'Вы успешно зарегистрировались'
+                 }
+            )
+    return Response(
+        {'status': 'error',
+         'message': 'Пользователь с таким email уже существует. '
+                    'Авторизуйтесь или введите другой email'
+         }
+    )
 
 
 

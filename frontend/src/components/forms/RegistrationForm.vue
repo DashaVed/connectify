@@ -24,7 +24,7 @@
                 v-model="form.valid"
                 v-model:errors-count="form.errorsCount"
                 @validate="onValidate"
-                @success="onSuccess"
+                @submit.prevent="submitForm"
                 class="px8 pt2 pb12">
             <div class="title2 text-center text-bold">Регистрация</div>
             <div class="title4 m2 text-center">Уже есть аккаунт?</div>
@@ -32,12 +32,22 @@
             <w-input
                     required
                     label="Имя"
+                    v-model="form.first_name"
                     :validators="[validators.required]">
             </w-input>
 
             <w-input
                     required
                     label="Фамилия"
+                    v-model="form.last_name"
+                    :validators="[validators.required]"
+                    class="mt3">
+            </w-input>
+
+            <w-input
+                    required
+                    label="Город проживания"
+                    v-model="form.city"
                     :validators="[validators.required]"
                     class="mt3">
             </w-input>
@@ -46,6 +56,7 @@
                     required
                     label="Email"
                     type="email"
+                    v-model="form.email"
                     :validators="[validators.required]"
                     class="mt3">
             </w-input>
@@ -54,6 +65,7 @@
                     required
                     class="mt3"
                     label="Пароль"
+                    v-model="form.password"
                     :type="isPassword ? 'password' : 'text'"
                     :inner-icon-right="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
                     @click:inner-icon-right="isPassword = !isPassword">
@@ -62,12 +74,12 @@
             <w-flex wrap align-center justify-end class="mt4">
 
                 <w-button md
-                    color="white"
-                    bg-color="indigo-dark6"
-                        type="submit"
-                        :disabled="form.valid === false"
-                        :loading="form.submitted && !form.sent"
-                        class="my5">
+                          color="white"
+                          bg-color="indigo-dark6"
+                          type="submit"
+                          :disabled="form.valid === false"
+                          :loading="form.submitted && !form.sent"
+                          class="my5">
                     Зарегистрироваться
                 </w-button>
 
@@ -99,18 +111,25 @@
 <script>
 export default {
     name: "RegistrationForm",
-    data: () => ({
-        isPassword: true,
-        form: {
-            valid: null,
-            submitted: false,
-            sent: false,
-            errorsCount: 0
-        },
-        validators: {
-            required: value => !!value || 'Поле обязательно для заполнения',
+    data() {
+        return {
+            isPassword: true,
+            form: {
+                first_name: '',
+                last_name: '',
+                city: '',
+                email: '',
+                password: null,
+                valid: null,
+                submitted: false,
+                sent: false,
+                errorsCount: 0
+            },
+            validators: {
+                required: value => !!value || 'Поле обязательно для заполнения',
+            }
         }
-    }),
+    },
 
     methods: {
         onSuccess() {
@@ -119,6 +138,18 @@ export default {
         onValidate() {
             this.form.sent = false
             this.form.submitted = this.form.errorsCount === 0
+        },
+        async submitForm() {
+            const formData = {
+                first_name: this.form.first_name,
+                last_name: this.form.last_name,
+                city: this.form.city,
+                email: this.form.email,
+                password: this.form.password,
+            };
+            await this.register(formData);
+            this.onSuccess();
+            this.$router.push({name: "login"})
         }
     }
 }

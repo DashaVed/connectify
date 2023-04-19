@@ -19,6 +19,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             last_name=self.validated_data['last_name'],
             city=self.validated_data['city'],
         )
+
         return user
 
 
