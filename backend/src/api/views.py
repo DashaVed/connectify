@@ -1,14 +1,10 @@
 from django.contrib.auth import authenticate
-from django.db.models import Prefetch
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status, mixins
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes, action
+from rest_framework.decorators import api_view, permission_classes,
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
-from api.serializers import RegistrationSerializer, TokenResponseSerializer
+from api.serializers import RegistrationSerializer, TokenResponseSerializer, LoginSerializer
 
 
 @api_view(['POST'])
@@ -29,6 +25,20 @@ def registration_view(request):
                     'Авторизуйтесь или введите другой email'
          }
     )
+
+
+@api_view(["POST"])
+@permission_classes([])
+def auth_view(request):
+    serializer = LoginSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = authenticate(request, **serializer.validated_data)
+    if user is None:
+        raise AuthenticationFailed()
+    token, _ = Token.objects.get_or_create(user=user)
+    response_data = {"token": token.key}
+    response_serializer = TokenResponseSerializer(response_data)
+    return Response(response_serializer.data)
 
 
 

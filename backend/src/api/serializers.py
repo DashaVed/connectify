@@ -23,5 +23,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+
 class TokenResponseSerializer(serializers.Serializer):
     token = serializers.CharField()
