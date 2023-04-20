@@ -1,22 +1,24 @@
-<script>
-import LoginButtonInHeader from "@/components/buttons/LoginButtonInHeader.vue";
+<script setup>
+import HeaderOnlyWithTitle from "@/components/HeaderOnlyWithTitle.vue";
+import LoginLink from "@/components/Links/LoginLink.vue";
 import RegisterButton from "@/components/buttons/RegisterButton.vue";
-export default {
-    name: "Navbar",
-    components: {LoginButtonInHeader, RegisterButton},
-}
 </script>
 
 <template>
     <header>
-        <w-toolbar shadow>
-            <div class="title1 text-bold">Connectify</div>
-            <div class="spacer"></div>
-            <LoginButtonInHeader/>
+        <HeaderOnlyWithTitle>
+            <LoginLink/>
             <RegisterButton md route="/register" class="pa4"/>
-        </w-toolbar>
+        </HeaderOnlyWithTitle>
+
     </header>
 </template>
+
+<script>
+export default {
+    name: "Navbar",
+}
+</script>
 
 <style scoped>
 </style>

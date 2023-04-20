@@ -1,3 +1,7 @@
+<script setup>
+import ResetButton from "@/components/buttons/ResetButton.vue";
+</script>
+
 <template>
     <w-card content-class="pa0">
         <div class="message-box">
@@ -24,13 +28,12 @@
                 v-model="form.valid"
                 v-model:errors-count="form.errorsCount"
                 @validate="onValidate"
-                @success="onSuccess"
-                class="px8 pt2 pb12">
-            <div class="title2 text-center text-bold">Авторизация</div>
-            <div class="body m2 text-center">Еще не зарегистрированы?</div>
+                class="px8 pt2 pb8">
+            <div class="title2 text-center text-bold mb3">Авторизация</div>
 
             <w-input
                     required
+                    v-model="form.email"
                     label="Email"
                     type="email"
                     :validators="[validators.required]"
@@ -40,6 +43,7 @@
             <w-input
                     required
                     class="mt3"
+                    v-model="form.password"
                     label="Пароль"
                     :type="isPassword ? 'password' : 'text'"
                     :inner-icon-right="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
@@ -48,38 +52,22 @@
 
             <w-flex wrap align-center justify-center class="mt4">
 
-                <w-button lg
-                    color="white"
-                    bg-color="indigo-dark6"
-                        type="submit"
-                        :disabled="form.valid === false"
-                        :loading="form.submitted && !form.sent"
-                        class="my5 ml5">
+                <w-button md
+                          color="white"
+                          bg-color="deep-orange"
+                          type="submit"
+                          :disabled="form.valid === false"
+                          class="title3 my5 ml3 pa3 pl6 pr6">
                     Войти
                 </w-button>
-
-                <w-button
-                        text
-                        type="reset"
-                        @click="form.submitted = form.sent = false"
-                        class="my1 ml2">
-                    <w-icon>
-                        mdi mdi-backspace-outline
-                    </w-icon>
-                </w-button>
+                <ResetButton @click="form.submitted = form.sent = false"/>
+            </w-flex>
+            <w-flex wrap align-center justify-center class="m2 mt3 text-center">
+                <span class="body mr2">Еще нет аккаунта?</span>
+                <a href="/register" class="sign-up-link body deep-orange-dark3">
+                    Создать</a>
             </w-flex>
         </w-form>
-
-        <w-notification
-                class="mt3"
-                v-model="form.sent"
-                success
-                transition="bounce"
-                absolute
-                plain
-                bottom>
-            Вы успешно авторизованы!
-        </w-notification>
     </w-card>
 </template>
 
@@ -89,6 +77,8 @@ export default {
     data: () => ({
         isPassword: true,
         form: {
+            email: '',
+            password: '',
             valid: null,
             submitted: false,
             sent: false,
@@ -100,9 +90,6 @@ export default {
     }),
 
     methods: {
-        onSuccess() {
-            setTimeout(() => (this.form.sent = true), 2000)
-        },
         onValidate() {
             this.form.sent = false
             this.form.submitted = this.form.errorsCount === 0
@@ -114,5 +101,9 @@ export default {
 <style scoped>
 .message-box {
     min-height: 35px;
+}
+
+.sign-up-link:hover {
+    text-decoration: underline;
 }
 </style>

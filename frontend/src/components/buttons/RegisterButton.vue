@@ -1,7 +1,7 @@
 <template>
     <w-button
             color="white"
-            bg-color="light-green-dark3"
+            bg-color="deep-orange"
             type="submit"
             class="">
         Зарегистрироваться
@@ -15,5 +15,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

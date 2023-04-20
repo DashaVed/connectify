@@ -1,21 +1,33 @@
+<script setup>
+import RegisterButton from "@/components/buttons/RegisterButton.vue";
+import ResetButton from "@/components/buttons/ResetButton.vue";
+import LoginLink from "@/components/Links/LoginLink.vue";
+</script>
+
 <template>
     <w-card content-class="pa0">
         <div class="message-box">
             <w-transition-fade>
                 <w-alert
-                        v-if="form.submitted"
+                        v-if="form.isSuccess === true"
                         success
                         no-border
                         class="my0 text-light">
-                    Все поля заполнены
+                    {{ message }}
                 </w-alert>
-
+                <w-alert
+                        v-else-if="form.isSuccess === false"
+                        error
+                        no-border
+                        class="my0 text-light">
+                    {{ message }}
+                </w-alert>
                 <w-alert
                         v-else-if="form.valid === false"
                         error
                         no-border
                         class="my0 text-light">
-                    Заполните все поля корректно!
+                    Заполните все поля корректно
                 </w-alert>
             </w-transition-fade>
         </div>
@@ -25,9 +37,8 @@
                 v-model:errors-count="form.errorsCount"
                 @validate="onValidate"
                 @submit.prevent="submitForm"
-                class="px8 pt2 pb12">
-            <div class="title2 text-center text-bold">Регистрация</div>
-            <div class="title4 m2 text-center">Уже есть аккаунт?</div>
+                class="px8 pt2 pb8">
+            <div class="title2 text-center text-bold mb3">Регистрация</div>
 
             <w-input
                     required
@@ -72,48 +83,29 @@
             </w-input>
 
             <w-flex wrap align-center justify-end class="mt4">
-
-                <w-button md
-                          color="white"
-                          bg-color="indigo-dark6"
-                          type="submit"
-                          :disabled="form.valid === false"
-                          :loading="form.submitted && !form.sent"
-                          class="my5">
-                    Зарегистрироваться
-                </w-button>
-
-                <w-button
-                        text
-                        type="reset"
-                        @click="form.submitted = form.sent = false"
-                        class="my1 mr2">
-                    <w-icon>
-                        mdi mdi-backspace-outline
-                    </w-icon>
-                </w-button>
+                <RegisterButton
+                    :disabled="form.valid === false"
+                    class="my5 pa4"
+                />
+                <ResetButton @click="form.submitted = form.sent = false"/>
+            </w-flex>
+            <w-flex wrap align-center justify-center class="m2 mt3 text-center">
+                <span class="body mr2">Уже есть аккаунт?</span>
+                <LoginLink class="body deep-orange-dark3"/>
             </w-flex>
         </w-form>
-
-        <w-notification
-                class="mt3"
-                v-model="form.sent"
-                success
-                transition="bounce"
-                absolute
-                plain
-                bottom>
-            Вы успешно зарегистрированы!
-        </w-notification>
     </w-card>
 </template>
 
 <script>
+import {register_user} from "@/services/api";
+
 export default {
     name: "RegistrationForm",
     data() {
         return {
             isPassword: true,
+            message: '',
             form: {
                 first_name: '',
                 last_name: '',
@@ -121,8 +113,9 @@ export default {
                 email: '',
                 password: null,
                 valid: null,
-                submitted: false,
+                submitted: null,
                 sent: false,
+                isSuccess: null,
                 errorsCount: 0
             },
             validators: {
@@ -132,9 +125,6 @@ export default {
     },
 
     methods: {
-        onSuccess() {
-            setTimeout(() => (this.form.sent = true), 2000)
-        },
         onValidate() {
             this.form.sent = false
             this.form.submitted = this.form.errorsCount === 0
@@ -147,9 +137,14 @@ export default {
                 email: this.form.email,
                 password: this.form.password,
             };
-            await this.register(formData);
-            this.onSuccess();
-            this.$router.push({name: "login"})
+            const response = await register_user(formData);
+            this.message = response.message;
+            if (response.status === 'ok') {
+                this.form.isSuccess = true;
+                setTimeout(this.$router.push, 1500, {name: "login"})
+            } else {
+                this.form.isSuccess = false;
+            }
         }
     }
 }
@@ -158,5 +153,8 @@ export default {
 <style scoped>
 .message-box {
     min-height: 35px;
+}
+.w-card__content {
+    max-width: 300px;
 }
 </style>
