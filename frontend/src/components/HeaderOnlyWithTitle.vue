@@ -1,7 +1,9 @@
 <template>
     <header>
         <w-toolbar shadow>
-            <div class="title1 text-bold">Connectify</div>
+            <router-link :to="{name: 'main'}">
+                <div class="title1 text-bold blue-dark6">Connectify</div>
+            </router-link>
             <div class="spacer"></div>
             <slot></slot>
         </w-toolbar>
