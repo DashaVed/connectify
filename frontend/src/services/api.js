@@ -17,3 +17,11 @@ export async function register_user(formData) {
     }
     return response.data
 }
+
+export async function getUser(id){
+    const response = await instance.get(`/users/${id}`);
+    if (response.status === 404) {
+        console.log(response)
+    }
+    return response.data
+}
