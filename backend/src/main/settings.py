@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'web',
     'api',
     'rest_framework',
-    'rest_framework.authtoken',
     'corsheaders',
 ]
 
@@ -110,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "web.User"
 
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    # "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",

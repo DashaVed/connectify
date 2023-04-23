@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate
+from rest_framework import viewsets, status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 
-from api.serializers import RegistrationSerializer, TokenResponseSerializer, LoginSerializer
+from api.serializers import RegistrationSerializer, TokenResponseSerializer, LoginSerializer, UserSerializer
+from web.models import User
 
 
 @api_view(['POST'])
@@ -27,18 +29,15 @@ def registration_view(request):
     )
 
 
-@api_view(["POST"])
-@permission_classes([])
-def auth_view(request):
-    serializer = LoginSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user = authenticate(request, **serializer.validated_data)
-    if user is None:
-        raise AuthenticationFailed()
-    token, _ = Token.objects.get_or_create(user=user)
-    response_data = {"token": token.key}
-    response_serializer = TokenResponseSerializer(response_data)
-    return Response(response_serializer.data)
+class UserViewSet(viewsets.ViewSet):
+
+    def retrieve(self, request, pk=None):
+        user = User.objects.filter(id=pk)
+        if user:
+            serializer = UserSerializer(user[0])
+            return Response(serializer.data)
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 
 
