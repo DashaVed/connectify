@@ -29,6 +29,10 @@ class UserManager(DjangoUserManager):
         return self._create_user(email, password, role=UserRole.admin, **extra_fields)
 
 
+def upload_to(filename):
+    return f'profiles/{filename}'
+
+
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
@@ -41,6 +45,8 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=1, null=True, blank=True, verbose_name='Пол')
     birthday = models.DateField(verbose_name='День рождения', null=True, blank=True)
     description = models.TextField(verbose_name='Описание', null=True, blank=True)
+    image = models.ImageField(upload_to=upload_to, null=True, blank=True, default='profiles/default_user.png',
+                              verbose_name='Фотография')
 
     @property
     def is_staff(self):

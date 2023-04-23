@@ -1,8 +1,5 @@
-from django.contrib.auth import authenticate
 from rest_framework import viewsets, status
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 
 from api.serializers import RegistrationSerializer, TokenResponseSerializer, LoginSerializer, UserSerializer
@@ -35,9 +32,5 @@ class UserViewSet(viewsets.ViewSet):
         user = User.objects.filter(id=pk)
         if user:
             serializer = UserSerializer(user[0])
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-
-
