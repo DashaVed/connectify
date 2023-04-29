@@ -1,5 +1,5 @@
 <template>
-    <w-button
+    <w-button xs
             text
             type="reset"
             class="my5 ml3">

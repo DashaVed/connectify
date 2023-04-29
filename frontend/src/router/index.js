@@ -23,6 +23,11 @@ const router = createRouter({
             name: 'profile',
             component: () => import('../views/ProfileView.vue'),
         },
+        {
+            path: '/groups/create',
+            name: 'create_group',
+            component: () => import('../views/GroupCreate.vue'),
+        },
     ]
 })
 

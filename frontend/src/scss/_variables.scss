@@ -1,0 +1,6 @@
+// First import the Wave UI variables, then override what you want.
+@import 'wave-ui/src/wave-ui/scss/_variables';
+
+$base-font-size: 16px;
+$base-increment: round(calc($base-font-size/4));
+$layout-padding: $base-increment*2;

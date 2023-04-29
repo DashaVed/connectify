@@ -10,7 +10,7 @@ export default {
 
 <style scoped>
 .login-button {
-    margin-right: 14px;
+    margin-right: 24px;
     /*color: var(--color-text);*/
 }
 .login-button:hover, .login-button:visited, .login-button:focus {

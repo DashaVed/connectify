@@ -4,7 +4,7 @@
             <w-image :src="url" height="200" width="200"></w-image>
             <w-flex column>
                 <span class="fullname__info ml10">{{getFullname}}</span>
-                <span class="created-at__info ml10 mb8 title3">Участник с {{user.created_at}}</span>
+                <span class="created-at__info ml10 mb4 body">Участник с {{user.created_at}}</span>
                 <span class="city__info">
                     <w-icon color="deep-orange pb1 ml10">mdi mdi-city</w-icon>
                     {{user.city}}
@@ -12,7 +12,7 @@
             </w-flex>
         </w-flex>
         <span class="description__title">О себе</span>
-        <p class="title4 mt2">{{user.description}}</p>
+        <p class="body mt2">{{user.description}}</p>
     </div>
 </template>
 

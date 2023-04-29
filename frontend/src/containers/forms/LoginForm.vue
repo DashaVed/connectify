@@ -10,7 +10,7 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
                         v-if="form.submitted"
                         success
                         no-border
-                        class="my0 text-light">
+                        class="my0 text-light body">
                     Все поля заполнены
                 </w-alert>
 
@@ -29,7 +29,7 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
                 v-model:errors-count="form.errorsCount"
                 @validate="onValidate"
                 class="px8 pt2 pb8">
-            <div class="title2 text-center text-bold mb3">Авторизация</div>
+            <div class="title2 text-center text-bold mb8">Авторизация</div>
 
             <w-input
                     required
@@ -37,7 +37,7 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
                     label="Email"
                     type="email"
                     :validators="[validators.required]"
-                    class="mt3">
+                    class="mb8">
             </w-input>
 
             <w-input

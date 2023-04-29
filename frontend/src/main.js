@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import axios from 'axios'
-import WaveUI from 'wave-ui'
-import 'wave-ui/dist/wave-ui.css'
+import WaveUI from 'wave-ui/src/wave-ui'
+// import 'wave-ui/dist/wave-ui.css'
 import '@mdi/font/css/materialdesignicons.min.css'
 
 import App from './App.vue'

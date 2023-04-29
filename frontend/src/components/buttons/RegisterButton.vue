@@ -3,7 +3,7 @@
             color="white"
             bg-color="deep-orange"
             type="submit"
-            class="">
+            sm>
         Зарегистрироваться
     </w-button>
 </template>

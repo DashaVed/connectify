@@ -38,13 +38,14 @@ import LoginLink from "@/components/Links/LoginLink.vue";
                 @validate="onValidate"
                 @submit.prevent="submitForm"
                 class="px8 pt2 pb8">
-            <div class="title2 text-center text-bold mb3">Регистрация</div>
+            <div class="title2 text-center text-bold mb6">Регистрация</div>
 
             <w-input
                     required
                     label="Имя"
                     v-model="form.first_name"
-                    :validators="[validators.required]">
+                    :validators="[validators.required]"
+                    class="mb4">
             </w-input>
 
             <w-input
@@ -52,7 +53,7 @@ import LoginLink from "@/components/Links/LoginLink.vue";
                     label="Фамилия"
                     v-model="form.last_name"
                     :validators="[validators.required]"
-                    class="mt3">
+                    class="mb4">
             </w-input>
 
             <w-input
@@ -60,7 +61,7 @@ import LoginLink from "@/components/Links/LoginLink.vue";
                     label="Город проживания"
                     v-model="form.city"
                     :validators="[validators.required]"
-                    class="mt3">
+                    class="mb4">
             </w-input>
 
             <w-input
@@ -69,7 +70,7 @@ import LoginLink from "@/components/Links/LoginLink.vue";
                     type="email"
                     v-model="form.email"
                     :validators="[validators.required]"
-                    class="mt3">
+                    class="mb4">
             </w-input>
 
             <w-input
@@ -82,10 +83,10 @@ import LoginLink from "@/components/Links/LoginLink.vue";
                     @click:inner-icon-right="isPassword = !isPassword">
             </w-input>
 
-            <w-flex wrap align-center justify-end class="mt4">
+            <w-flex wrap align-center justify-center class="mt4">
                 <RegisterButton
                     :disabled="form.valid === false"
-                    class="my5 pa4"
+                    class="my5 pa4 "
                 />
                 <ResetButton @click="form.submitted = form.sent = false"/>
             </w-flex>
@@ -153,8 +154,5 @@ export default {
 <style scoped>
 .message-box {
     min-height: 35px;
-}
-.w-card__content {
-    max-width: 300px;
 }
 </style>
