@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from web.models import User
+from web.models import User, Group
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -38,3 +38,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'first_name', 'last_name', 'city',
                   'gender', 'birthday', 'description', 'created_at', 'image']
+
+
+class GroupSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Group
+        fields = ['id', 'title', 'city', 'description', 'created_at', 'updated_at']

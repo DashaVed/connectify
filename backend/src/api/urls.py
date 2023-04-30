@@ -17,11 +17,12 @@ Including another URLconf
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from api.views import registration_view, UserViewSet
+from api.views import registration_view, UserViewSet, GroupViewSet
 
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
+router.register(r'groups', GroupViewSet, basename='groups')
 
 urlpatterns = [
     path("register/", registration_view, name="registration"),
