@@ -83,10 +83,20 @@ import LoginLink from "@/components/Links/LoginLink.vue";
                     @click:inner-icon-right="isPassword = !isPassword">
             </w-input>
 
+            <w-input
+                    required
+                    class="mt3"
+                    label="Повторите пароль"
+                    v-model="form.re_password"
+                    :type="isPassword ? 'password' : 'text'"
+                    :inner-icon-right="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
+                    @click:inner-icon-right="isPassword = !isPassword">
+            </w-input>
+
             <w-flex wrap align-center justify-center class="mt4">
                 <RegisterButton
-                    :disabled="form.valid === false"
-                    class="my5 pa4 "
+                        :disabled="form.valid === false"
+                        class="my5 pa4 "
                 />
                 <ResetButton @click="form.submitted = form.sent = false"/>
             </w-flex>
@@ -113,6 +123,7 @@ export default {
                 city: '',
                 email: '',
                 password: null,
+                re_password: null,
                 valid: null,
                 submitted: null,
                 sent: false,
@@ -137,6 +148,7 @@ export default {
                 city: this.form.city,
                 email: this.form.email,
                 password: this.form.password,
+                re_password: thisform.re_password,
             };
             const response = await register_user(formData);
             this.message = response.message;
