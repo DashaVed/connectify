@@ -8,25 +8,25 @@ export const useTokenStore = defineStore('token', {
         }
     },
     actions: {
-        initializeTokenStore(state) {
+        initializeTokenStore() {
             if (localStorage.getItem('access')) {
-                state.access = localStorage.getItem('access');
-                state.refresh = localStorage.getItem('refresh')
+                this.access = localStorage.getItem('access');
+                this.refresh = localStorage.getItem('refresh')
             } else {
-                state.access = '';
+                this.access = '';
             }
         },
-        setAccess(state, access) {
-            state.access = access;
+        setAccess(access) {
+            this.access = access;
         },
-        setRefresh(state, refresh) {
-            state.refresh = refresh
+        setRefresh(refresh) {
+            this.refresh = refresh
         },
-        removeAccess(state) {
-            state.access = '';
+        removeAccess() {
+            this.access = '';
         },
-        removeRefresh(state) {
-            state.refresh = ''
+        removeRefresh() {
+            this.refresh = ''
         },
     }
 })

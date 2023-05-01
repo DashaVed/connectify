@@ -1,11 +1,10 @@
 import {defineStore} from 'pinia'
-import {login as apiLogin, refreshUserToken} from "@/services/api";
+import {login as apiLogin, refreshUserToken, getProfile} from "@/services/api";
 import {useTokenStore} from "@/stores/token";
 
 export const useAuthStore = defineStore('auth', {
     state: () => {
         return {
-            error: null,
             user: null,
             token: useTokenStore()
         }
@@ -17,27 +16,37 @@ export const useAuthStore = defineStore('auth', {
     },
     actions: {
         async login(email, password) {
-            this.error = null;
             try {
                 localStorage.removeItem('access')
                 localStorage.removeItem('refresh')
 
                 const response = await apiLogin(email, password);
-                this.token.setAccess(this.token, response.access)
-                this.token.setRefresh(this.token, response.refresh)
+                this.token.setAccess(response.access)
+                this.token.setRefresh(response.refresh)
 
                 localStorage.setItem('access', response.access)
                 localStorage.setItem('refresh', response.refresh)
+
+                await this.load()
             } catch (e) {
                 throw new Error(e.message)
             }
         },
+        async load() {
+            try {
+                this.user = await getProfile()
+            } catch(e) {
+                throw new Error(e.message)
+            }
+            if (!this.user) {
+                this.logout();
+            }
+        },
         async refreshToken() {
-            console.log(this.token.access)
             if (this.token.access) {
                 const access = await refreshUserToken(this.token.refresh)
 
-                this.token.setAccess(this.token, access)
+                this.token.setAccess(access)
                 localStorage.setItem('access', access)
             }
 
@@ -45,8 +54,10 @@ export const useAuthStore = defineStore('auth', {
         logout() {
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
-            this.token.removeAccess(this.token)
-            this.token.removeRefresh(this.token)
+            this.token.removeAccess()
+            this.token.removeRefresh()
+
+            this.user = null
         }
     },
 });

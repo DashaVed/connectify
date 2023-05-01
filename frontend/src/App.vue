@@ -12,12 +12,15 @@ import {mapActions} from "pinia";
 
 export default {
     name: "App",
+    created() {
+        this.load();
+    },
     mounted() {
         setInterval(() => {
             this.refreshToken()
         }, 60000)
     },
-    methods: mapActions(useAuthStore, ['refreshToken'])
+    methods: mapActions(useAuthStore, ['refreshToken', 'load'])
 }
 </script>
 

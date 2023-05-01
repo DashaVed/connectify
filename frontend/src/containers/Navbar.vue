@@ -15,8 +15,14 @@ import RegisterButton from "@/components/buttons/RegisterButton.vue";
 </template>
 
 <script>
+import {useAuthStore} from "@/stores/auth";
+import {mapState} from "pinia";
+
 export default {
     name: "Navbar",
+    computed: {
+        ...mapState(useAuthStore, ['isAuth'])
+    }
 }
 </script>
 

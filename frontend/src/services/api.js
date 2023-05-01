@@ -1,15 +1,15 @@
 import {API_URL} from "./consts";
 import axios from "axios";
-import {useTokenStore} from "@/stores/token";
+import {useAuthStore} from "@/stores/auth";
 
 const instance = axios.create({
     baseURL: API_URL,
 });
 
 instance.interceptors.request.use(function (config) {
-    const token = useTokenStore();
-    if (token.access) {
-        config.headers['Authorization'] = `JWT ${token.access}`;
+    const access = localStorage.getItem('access');
+    if (access) {
+        config.headers['Authorization'] = `JWT ${access}`;
     } else {
         config.headers['Authorization'] = '';
     }
@@ -40,8 +40,16 @@ export async function login(email, password) {
     }
 }
 
+export async function getProfile() {
+    try {
+        const response = await instance.get('auth/users/me/')
+        return response.data
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 export async function refreshUserToken(refresh) {
-    console.log(refresh)
     const response = await instance.post('auth/jwt/refresh', {refresh: refresh})
     return response.data.access
 }
