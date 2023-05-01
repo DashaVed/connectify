@@ -3,7 +3,7 @@
         <w-flex wrap class="mb8">
             <w-image :src="url" height="200" width="200"></w-image>
             <w-flex column>
-                <span class="fullname__info ml10">{{getFullname}}</span>
+                <span class="fullname__info ml10">{{user.name}}</span>
                 <span class="created-at__info ml10 mb4 body">Участник с {{user.created_at}}</span>
                 <span class="city__info">
                     <w-icon color="deep-orange pb1 ml10">mdi mdi-city</w-icon>
@@ -33,11 +33,6 @@ export default {
             url: null,
             isLoading: false,
         }
-    },
-    computed: {
-      getFullname() {
-          return `${this.user.first_name} ${this.user.last_name}`
-      }
     },
     methods: {
         async load() {

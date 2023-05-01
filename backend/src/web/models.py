@@ -38,8 +38,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True)
     role = models.CharField(choices=UserRole.choices, max_length=15, default=UserRole.user)
-    first_name = models.CharField(max_length=255, null=True, blank=False, verbose_name='Имя')
-    last_name = models.CharField(max_length=255, null=True, blank=False, verbose_name='Фамилия')
+    name = models.CharField(max_length=512, null=True, blank=False, verbose_name='ФИ')
     phone = models.CharField(max_length=30, unique=True, null=True, verbose_name='Номер телефона')
     city = models.CharField(max_length=255, null=True, blank=False, verbose_name='Город проживания')
     gender = models.CharField(max_length=1, null=True, blank=True, verbose_name='Пол')

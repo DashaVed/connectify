@@ -42,16 +42,8 @@ import LoginLink from "@/components/Links/LoginLink.vue";
 
             <w-input
                     required
-                    label="Имя"
-                    v-model="form.first_name"
-                    :validators="[validators.required]"
-                    class="mb4">
-            </w-input>
-
-            <w-input
-                    required
-                    label="Фамилия"
-                    v-model="form.last_name"
+                    label="Имя и Фамилия"
+                    v-model="form.name"
                     :validators="[validators.required]"
                     class="mb4">
             </w-input>
@@ -118,8 +110,7 @@ export default {
             isPassword: true,
             message: '',
             form: {
-                first_name: '',
-                last_name: '',
+                name: '',
                 city: '',
                 email: '',
                 password: null,
@@ -143,12 +134,11 @@ export default {
         },
         async submitForm() {
             const formData = {
-                first_name: this.form.first_name,
-                last_name: this.form.last_name,
+                name: this.form.name,
                 city: this.form.city,
                 email: this.form.email,
                 password: this.form.password,
-                re_password: thisform.re_password,
+                re_password: this.form.re_password,
             };
             const response = await register_user(formData);
             this.message = response.message;
