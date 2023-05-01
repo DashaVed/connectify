@@ -7,8 +7,17 @@ import {RouterView} from 'vue-router'
 </template>
 
 <script>
+import {useAuthStore} from "@/stores/auth";
+import {mapActions} from "pinia";
+
 export default {
     name: "App",
+    mounted() {
+        setInterval(() => {
+            this.refreshToken()
+        }, 60000)
+    },
+    methods: mapActions(useAuthStore, ['refreshToken'])
 }
 </script>
 

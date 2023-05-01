@@ -16,3 +16,9 @@ export default {
     name: "RegistrationView",
 }
 </script>
+
+<style>
+.box {
+    width: 400px;
+}
+</style>

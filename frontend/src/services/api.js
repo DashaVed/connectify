@@ -1,24 +1,52 @@
 import {API_URL} from "./consts";
 import axios from "axios";
+import {useTokenStore} from "@/stores/token";
 
 const instance = axios.create({
     baseURL: API_URL,
 });
 
-export async function register_user(formData) {
-    const response = await instance.post('/register/', formData);
-    if (response.status === 500) {
-        console.error(response);
-        throw new Error("Произошла неизвестная ошибка, попробуйте еще раз");
+instance.interceptors.request.use(function (config) {
+    const token = useTokenStore();
+    if (token.access) {
+        config.headers['Authorization'] = `JWT ${token.access}`;
+    } else {
+        config.headers['Authorization'] = '';
     }
-    // python: response.status in (400, 401)
-    if ([400, 401].includes(response.status)) {
-        throw new Error(response.data.detail);
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
+
+export async function registerUser(formData) {
+    try {
+        const response = await instance.post('auth/users/', formData);
+        return response.data
+    } catch (e) {
+        if (e.response.data.email) {
+            throw new Error(e.response.data.email);
+        }else {
+            throw new Error(e.response.data.password);
+        }
     }
-    return response.data
 }
 
-export async function getUser(id){
+export async function login(email, password) {
+    try {
+        const response = await instance.post('auth/jwt/create/', {email, password})
+        return response.data
+    } catch (e) {
+        throw new Error(e.response.data)
+    }
+}
+
+export async function refreshUserToken(refresh) {
+    console.log(refresh)
+    const response = await instance.post('auth/jwt/refresh', {refresh: refresh})
+    return response.data.access
+}
+
+export async function getUser(id) {
     const response = await instance.get(`/users/${id}`);
     if (response.status === 404) {
         console.log(response)

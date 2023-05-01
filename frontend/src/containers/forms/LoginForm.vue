@@ -28,6 +28,7 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
                 v-model="form.valid"
                 v-model:errors-count="form.errorsCount"
                 @validate="onValidate"
+                @submit.prevent="submitForm"
                 class="px8 pt2 pb8">
             <div class="title2 text-center text-bold mb8">Авторизация</div>
 
@@ -72,6 +73,10 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
 </template>
 
 <script>
+import {useAuthStore} from "@/stores/auth";
+import {mapActions} from "pinia";
+import {nextTick} from "vue";
+
 export default {
     name: "RegistrationForm",
     data: () => ({
@@ -90,9 +95,15 @@ export default {
     }),
 
     methods: {
+        ...mapActions(useAuthStore, ['login']),
         onValidate() {
             this.form.sent = false
             this.form.submitted = this.form.errorsCount === 0
+        },
+        async submitForm() {
+            await this.login(this.form.email, this.form.password)
+            await nextTick()
+            // this.$router.push({name: "main"})
         }
     }
 }

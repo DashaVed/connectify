@@ -42,7 +42,7 @@ import LoginLink from "@/components/Links/LoginLink.vue";
 
             <w-input
                     required
-                    label="Имя и Фамилия"
+                    label="Имя Фамилия"
                     v-model="form.name"
                     :validators="[validators.required]"
                     class="mb4">
@@ -82,6 +82,7 @@ import LoginLink from "@/components/Links/LoginLink.vue";
                     v-model="form.re_password"
                     :type="isPassword ? 'password' : 'text'"
                     :inner-icon-right="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
+                    :validators="[validators.passwordsAccess]"
                     @click:inner-icon-right="isPassword = !isPassword">
             </w-input>
 
@@ -101,7 +102,7 @@ import LoginLink from "@/components/Links/LoginLink.vue";
 </template>
 
 <script>
-import {register_user} from "@/services/api";
+import {registerUser} from "@/services/api";
 
 export default {
     name: "RegistrationForm",
@@ -123,6 +124,7 @@ export default {
             },
             validators: {
                 required: value => !!value || 'Поле обязательно для заполнения',
+                passwordsAccess: (value) => this.form.password === value || 'Пароли не совпадают',
             }
         }
     },
@@ -140,13 +142,14 @@ export default {
                 password: this.form.password,
                 re_password: this.form.re_password,
             };
-            const response = await register_user(formData);
-            this.message = response.message;
-            if (response.status === 'ok') {
+            try {
+                const response = await registerUser(formData)
                 this.form.isSuccess = true;
+                this.message = 'Вы успешно зарегистрировались!'
                 setTimeout(this.$router.push, 1500, {name: "login"})
-            } else {
+            } catch (e) {
                 this.form.isSuccess = false;
+                this.message = e.message
             }
         }
     }
@@ -156,5 +159,6 @@ export default {
 <style scoped>
 .message-box {
     min-height: 35px;
+    max-width: 400px;
 }
 </style>
