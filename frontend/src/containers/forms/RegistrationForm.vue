@@ -143,7 +143,7 @@ export default {
                 re_password: this.form.re_password,
             };
             try {
-                const response = await registerUser(formData)
+                await registerUser(formData)
                 this.form.isSuccess = true;
                 this.message = 'Вы успешно зарегистрировались!'
                 setTimeout(this.$router.push, 1500, {name: "login"})

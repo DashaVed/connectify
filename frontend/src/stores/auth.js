@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.setItem('access', response.access)
                 localStorage.setItem('refresh', response.refresh)
             } catch (e) {
-                this.error = e.message;
+                throw new Error(e.message)
             }
         },
         async refreshToken() {

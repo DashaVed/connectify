@@ -7,6 +7,13 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
         <div class="message-box">
             <w-transition-fade>
                 <w-alert
+                        v-if="form.isWrong === true"
+                        error
+                        no-border
+                        class="my0 text-light">
+                    Неправильный email или пароль. Попробуйте еще раз.
+                </w-alert>
+                <w-alert
                         v-if="form.submitted"
                         success
                         no-border
@@ -87,6 +94,7 @@ export default {
             valid: null,
             submitted: false,
             sent: false,
+            isWrong: false,
             errorsCount: 0
         },
         validators: {
@@ -101,9 +109,14 @@ export default {
             this.form.submitted = this.form.errorsCount === 0
         },
         async submitForm() {
-            await this.login(this.form.email, this.form.password)
-            await nextTick()
-            // this.$router.push({name: "main"})
+            try {
+                await this.login(this.form.email, this.form.password)
+                await nextTick()
+                this.$router.push({name: "main"})
+            } catch {
+                this.form.isWrong = true;
+            }
+
         }
     }
 }
