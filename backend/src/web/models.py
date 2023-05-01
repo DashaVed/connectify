@@ -57,7 +57,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['name', 'city']
 
     class Meta:
         verbose_name = "пользователь"

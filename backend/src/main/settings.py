@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'web',
     'api',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'corsheaders',
 ]
 
@@ -113,10 +115,20 @@ REST_FRAMEWORK = {
     # "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     "PAGE_SIZE": 10,
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+DJOSER = {
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SERIALIZERS": {
+    }
 }
 
 # Internationalization
