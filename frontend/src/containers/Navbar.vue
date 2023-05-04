@@ -1,7 +1,7 @@
 <script setup>
 import HeaderOnlyWithTitle from "@/components/HeaderOnlyWithTitle.vue";
 import LoginLink from "@/components/Links/LoginLink.vue";
-import RegisterButton from "@/components/buttons/RegisterButton.vue";
+import RegisterButton from "@/components/buttons/OrangeButton.vue";
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import RegisterButton from "@/components/buttons/RegisterButton.vue";
         <HeaderOnlyWithTitle>
             <div v-if="!isAuth">
                 <LoginLink/>
-                <RegisterButton md route="/register" class="pa4"/>
+                <RegisterButton route="/register">Зарегистрироваться</RegisterButton>
             </div>
             <div v-if="isAuth">
                 <w-menu persistent align-right shadow custom class="mt6">
@@ -34,7 +34,7 @@ import RegisterButton from "@/components/buttons/RegisterButton.vue";
                             <router-link to="/" class="menu-link">Ваши мероприятия</router-link>
                             <router-link to="/" class="menu-link">Ваши группы</router-link>
                             <w-divider class="ma3"/>
-                            <router-link to="/" class="menu-link">Посмотреть профиль</router-link>
+                            <router-link :to="{name: 'profile', params: {id: user.id}}" class="menu-link">Посмотреть профиль</router-link>
                             <router-link to="/" class="menu-link">Настройки</router-link>
                             <w-divider class="ma3"/>
                             <router-link to="/" class="menu-link">Выйти</router-link>

@@ -1,5 +1,6 @@
 <script setup>
 import ResetButton from "@/components/buttons/ResetButton.vue";
+import {default as LoginButton} from "@/components/buttons/OrangeButton.vue"
 </script>
 
 <template>
@@ -12,13 +13,6 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
                         no-border
                         class="my0 text-light">
                     Неправильный email или пароль. Попробуйте еще раз.
-                </w-alert>
-                <w-alert
-                        v-if="form.submitted"
-                        success
-                        no-border
-                        class="my0 text-light body">
-                    Все поля заполнены
                 </w-alert>
 
                 <w-alert
@@ -60,14 +54,7 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
 
             <w-flex wrap align-center justify-center class="mt4">
 
-                <w-button md
-                          color="white"
-                          bg-color="deep-orange"
-                          type="submit"
-                          :disabled="form.valid === false"
-                          class="title3 my5 ml3 pa3 pl6 pr6">
-                    Войти
-                </w-button>
+                <LoginButton class="ml4">Войти</LoginButton>
                 <ResetButton @click="form.submitted = form.sent = false"/>
             </w-flex>
             <w-flex wrap align-center justify-center class="m2 mt3 text-center">

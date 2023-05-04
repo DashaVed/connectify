@@ -3,14 +3,14 @@
             color="white"
             bg-color="deep-orange"
             type="submit"
-            sm>
-        Зарегистрироваться
+            class="pa4" sm>
+        <slot></slot>
     </w-button>
 </template>
 
 <script>
 export default {
-    name: "RegisterButton"
+    name: "OrangeButton"
 }
 </script>
 

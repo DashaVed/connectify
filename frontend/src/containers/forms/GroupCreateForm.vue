@@ -1,5 +1,6 @@
 <script setup>
 import ResetButton from "@/components/buttons/ResetButton.vue";
+import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
 </script>
 
 <template>
@@ -43,13 +44,7 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
             </w-textarea>
 
             <w-flex wrap align-center>
-                <w-button sm
-                          color="white"
-                          bg-color="deep-orange"
-                          type="submit"
-                          class="title3 pa4">
-                    Создать
-                </w-button>
+                <CreateButton>Создать</CreateButton>
                 <ResetButton @click="form.submitted = form.sent = false"/>
             </w-flex>
         </w-form>

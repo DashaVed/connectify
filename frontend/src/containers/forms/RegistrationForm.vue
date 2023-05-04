@@ -1,5 +1,5 @@
 <script setup>
-import RegisterButton from "@/components/buttons/RegisterButton.vue";
+import RegisterButton from "@/components/buttons/OrangeButton.vue";
 import ResetButton from "@/components/buttons/ResetButton.vue";
 import LoginLink from "@/components/Links/LoginLink.vue";
 </script>
@@ -89,8 +89,8 @@ import LoginLink from "@/components/Links/LoginLink.vue";
             <w-flex wrap align-center justify-center class="mt4">
                 <RegisterButton
                         :disabled="form.valid === false"
-                        class="my5 pa4 "
-                />
+                        class="my5"
+                >Зарегистрироваться</RegisterButton>
                 <ResetButton @click="form.submitted = form.sent = false"/>
             </w-flex>
             <w-flex wrap align-center justify-center class="m2 mt3 text-center">
