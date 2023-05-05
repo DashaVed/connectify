@@ -55,6 +55,9 @@ export async function refreshUserToken(refresh) {
 }
 
 export async function getUser(id) {
+    if (!id) {
+        id = useAuthStore().user.id
+    }
     const response = await instance.get(`/users/${id}`);
     if (response.status === 404) {
         console.log(response)

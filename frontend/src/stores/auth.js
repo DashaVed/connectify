@@ -43,11 +43,13 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         async refreshToken() {
-            if (this.token.access) {
-                const access = await refreshUserToken(this.token.refresh)
+            if (localStorage.getItem('access')) {
+                const access = await refreshUserToken(localStorage.getItem('refresh'))
 
                 this.token.setAccess(access)
                 localStorage.setItem('access', access)
+            } else {
+                console.log('refresh token does not exist')
             }
 
         },
