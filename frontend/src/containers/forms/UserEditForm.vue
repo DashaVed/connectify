@@ -121,7 +121,7 @@ export default {
                 this.form.valid = false;
                 return false;
             }
-            return date.toISOString().startsWith(dateStr);
+            return true;
         },
         async load() {
             this.isLoading = false;
