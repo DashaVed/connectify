@@ -6,9 +6,6 @@ import UserGroups from "@/containers/UserGroups.vue"
 
 <template>
     <Navbar/>
-    <w-button @click="logout">
-        logout
-    </w-button>
     <w-flex wrap gap="2">
     <UserInfo/>
     <UserGroups/>
@@ -17,14 +14,8 @@ import UserGroups from "@/containers/UserGroups.vue"
 </template>
 
 <script>
-import {useAuthStore} from "@/stores/auth";
-import {mapActions} from "pinia";
-
 export default {
     name: "ProfileView",
-    methods: {
-        ...mapActions(useAuthStore, ['logout']),
-    }
 }
 </script>
 

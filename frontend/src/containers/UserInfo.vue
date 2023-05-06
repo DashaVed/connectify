@@ -1,7 +1,7 @@
 <template>
     <div class="box xs8 pl12 pt8" v-if="isLoading">
         <w-flex wrap class="mb8">
-            <w-image :src="url" height="200" width="200"></w-image>
+            <w-image :src="user.image" height="200" width="200"></w-image>
             <w-flex column>
                 <span class="fullname__info ml10">{{user.name}}</span>
                 <span class="created-at__info ml10 mb4 body">Участник с {{user.created_at}}</span>
@@ -18,19 +18,16 @@
 
 <script>
 import {getUser} from "@/services/api";
-import {BASE_URL} from "@/services/consts";
 
 
 export default {
     name: "UserInfo",
     async created() {
         await this.load();
-        await this.getUrl();
     },
     data() {
         return {
             user: null,
-            url: null,
             isLoading: false,
         }
     },
@@ -38,11 +35,7 @@ export default {
         async load() {
             this.isLoading = false;
             this.user = await getUser(this.$route.params.id);
-            console.log(this.user);
             this.isLoading = true;
-        },
-        getUrl() {
-            this.url = BASE_URL + this.user.image
         },
     }
 }

@@ -24,6 +24,11 @@ const router = createRouter({
             component: () => import('../views/ProfileView.vue'),
         },
         {
+            path: '/account',
+            name: 'account',
+            component: () => import('../views/AccountSettingsView.vue'),
+        },
+        {
             path: '/groups/create',
             name: 'create_group',
             component: () => import('../views/GroupCreate.vue'),

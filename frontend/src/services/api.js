@@ -25,7 +25,7 @@ export async function registerUser(formData) {
     } catch (e) {
         if (e.response.data.email) {
             throw new Error(e.response.data.email);
-        }else {
+        } else {
             throw new Error(e.response.data.password);
         }
     }
@@ -63,6 +63,16 @@ export async function getUser(id) {
         console.log(response)
     }
     return response.data
+}
+
+export async function updateUser(userData) {
+    try {
+        const response = await instance.put(`users/${useAuthStore().user.id}/`, userData);
+        return response.data;
+    } catch(e) {
+        console.log(e.response.data)
+        throw new Error(e.response.data)
+    }
 }
 
 export async function createGroup(formData) {
