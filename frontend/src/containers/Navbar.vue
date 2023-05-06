@@ -26,10 +26,11 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                         <w-icon xl
                                 v-if="isMenuShow"
                                 @click="isMenuShow = !isMenuShow"
+                                color="deep-orange"
                                 class="pb1">mdi mdi-chevron-up
                         </w-icon>
                     </template>
-                    <w-card content-class="pa4">
+                    <w-toolbar shadow content-class="pa10">
                         <w-grid columns="1">
                             <router-link to="/" class="menu-link">Ваши мероприятия</router-link>
                             <router-link to="/" class="menu-link">Ваши группы</router-link>
@@ -39,7 +40,7 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                             <w-divider class="ma3"/>
                             <router-link to="/" class="menu-link">Выйти</router-link>
                         </w-grid>
-                    </w-card>
+                    </w-toolbar>
                 </w-menu>
             </div>
         </HeaderOnlyWithTitle>
