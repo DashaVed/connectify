@@ -38,19 +38,19 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                             <router-link :to="{name: 'profile', params: {id: user.id}}" class="menu-link">Посмотреть профиль</router-link>
                             <router-link :to="{name: 'account'}" class="menu-link">Настройки</router-link>
                             <w-divider class="ma3"/>
-                            <router-link to="/" class="menu-link">Выйти</router-link>
+                            <span @click="logout" class="menu-link">Выйти</span>
                         </w-grid>
                     </w-toolbar>
                 </w-menu>
             </div>
-        </HeaderOnlyWithTitle>
+        </HeaderOnlyWithTitle>+
 
     </header>
 </template>
 
 <script>
 import {useAuthStore} from "@/stores/auth";
-import {mapState} from "pinia";
+import {mapActions, mapState} from "pinia";
 
 export default {
     name: "Navbar",
@@ -61,6 +61,9 @@ export default {
     },
     computed: {
         ...mapState(useAuthStore, ['user', 'isAuth']),
+    },
+    methods: {
+        ...mapActions(useAuthStore, ['logout'])
     }
 }
 </script>
