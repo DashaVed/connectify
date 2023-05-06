@@ -6,14 +6,10 @@ from api.serializers import TokenResponseSerializer, \
 from web.models import User, Group
 
 
-class UserViewSet(viewsets.ViewSet):
+class UserViewSet(viewsets.ModelViewSet):
 
-    def retrieve(self, request, pk=None):
-        user = User.objects.filter(id=pk)
-        if user:
-            serializer = UserSerializer(user[0])
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class GroupViewSet(viewsets.ModelViewSet):
