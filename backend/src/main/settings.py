@@ -126,10 +126,14 @@ SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
 }
 
+DOMAIN = 'localhost:5173'
+SITE_NAME = 'Connectify'
+
 DJOSER = {
     "USER_CREATE_PASSWORD_RETYPE": True,
-    "SERIALIZERS": {
-    }
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'SEND_ACTIVATION_EMAIL': False,
 }
 
 SPECTACULAR_SETTINGS = {
@@ -138,6 +142,18 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'dasha.test93@gmail.com'
+EMAIL_HOST_PASSWORD = 'dkwkqsohknivcwri'
+
+EMAIL_SERVER = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

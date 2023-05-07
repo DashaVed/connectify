@@ -45,6 +45,7 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     description = models.TextField(verbose_name='Описание', null=True, blank=True)
     image = models.ImageField(upload_to=upload_to, null=True, blank=True, default='profiles/default_user.png',
                               verbose_name='Фотография')
+    is_active = models.BooleanField(default=True)
 
     @property
     def is_staff(self):

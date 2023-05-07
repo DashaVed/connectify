@@ -40,6 +40,22 @@ export async function login(email, password) {
     }
 }
 
+export async function resetPassword(email) {
+    try{
+        return await instance.post('auth/users/reset_password/', {email})
+    } catch (e) {
+        return e.response
+    }
+}
+
+export async function resetPasswordConfirm(formData) {
+    try {
+        return await instance.post('auth/users/reset_password_confirm/', formData)
+    }catch (e) {
+        return e.response
+    }
+}
+
 export async function getProfile() {
     try {
         const response = await instance.get('auth/users/me/')

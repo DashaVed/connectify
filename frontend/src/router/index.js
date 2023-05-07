@@ -33,6 +33,11 @@ const router = createRouter({
             name: 'create_group',
             component: () => import('../views/GroupCreate.vue'),
         },
+        {
+            path: '/password/reset/confirm/:uid/:token',
+            name: 'create_group',
+            component: () => import('../views/ResetPasswordView.vue'),
+        },
     ]
 })
 

@@ -1,6 +1,7 @@
 <script setup>
 import ResetButton from "@/components/buttons/ResetButton.vue";
 import {default as LoginButton} from "@/components/buttons/OrangeButton.vue"
+import ResetPasswordForm from "@/containers/forms/ResetPasswordForm.vue"
 </script>
 
 <template>
@@ -51,7 +52,9 @@ import {default as LoginButton} from "@/components/buttons/OrangeButton.vue"
                     :inner-icon-right="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
                     @click:inner-icon-right="isPassword = !isPassword">
             </w-input>
-
+            <div class="mt2 mr6 text-center">
+                <span class="forget-password" @click="showOverlay=true">Забыли пароль?</span>
+            </div>
             <w-flex wrap align-center justify-center class="mt4">
 
                 <LoginButton class="ml4">Войти</LoginButton>
@@ -64,6 +67,7 @@ import {default as LoginButton} from "@/components/buttons/OrangeButton.vue"
             </w-flex>
         </w-form>
     </w-card>
+    <ResetPasswordForm v-model="showOverlay" :valids="validators"/>
 </template>
 
 <script>
@@ -72,7 +76,7 @@ import {mapActions} from "pinia";
 import {nextTick} from "vue";
 
 export default {
-    name: "RegistrationForm",
+    name: "LoginForm",
     data: () => ({
         isPassword: true,
         form: {
@@ -86,7 +90,8 @@ export default {
         },
         validators: {
             required: value => !!value || 'Поле обязательно для заполнения',
-        }
+        },
+        showOverlay: false,
     }),
 
     methods: {
@@ -116,5 +121,13 @@ export default {
 
 .sign-up-link:hover {
     text-decoration: underline;
+}
+
+.forget-password {
+    font-size: 14px;
+}
+
+.forget-password:hover, .forget-password:focus, .forget-password:active {
+    color: #ff6825;
 }
 </style>

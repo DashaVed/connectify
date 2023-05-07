@@ -43,7 +43,7 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                     </w-toolbar>
                 </w-menu>
             </div>
-        </HeaderOnlyWithTitle>+
+        </HeaderOnlyWithTitle>
 
     </header>
 </template>
