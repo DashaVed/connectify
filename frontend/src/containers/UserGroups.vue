@@ -1,5 +1,10 @@
 <template>
-    <span>fkjalfkjaijfaoif;ja;jfa</span>
+    <h1 style="font-size: 40px;">fkjalfk</h1>
+       <p>
+           jj
+       </p>
+    <span> fdjfkdjflkjfaksdhfkhh</span>
+    <w-divider/>
 </template>
 
 <script>

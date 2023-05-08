@@ -15,7 +15,7 @@ import Navbar from '@/containers/Navbar.vue'
 
 <script>
 export default {
-    name: "GroupCreateForm"
+    name: "GroupCreateView"
 }
 </script>
 

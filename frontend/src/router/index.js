@@ -35,7 +35,7 @@ const router = createRouter({
         {
             path: '/groups/create',
             name: 'create_group',
-            component: () => import('../views/GroupCreate.vue'),
+            component: () => import('../views/GroupCreateView.vue'),
         },
         {
             path: '/password/reset/confirm/:uid/:token',

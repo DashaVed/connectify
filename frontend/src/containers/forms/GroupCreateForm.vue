@@ -8,10 +8,10 @@ import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
         <div class="message-box">
             <w-transition-fade>
                 <w-alert sm
-                        v-if="message"
-                        success
-                        no-border
-                        class="text-light mb8">
+                         v-if="message"
+                         success
+                         no-border
+                         class="text-light mb8">
                     {{ message }}
                 </w-alert>
             </w-transition-fade>
@@ -40,7 +40,7 @@ import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
                     label="Описание"
                     class="mb5"
                     v-model="form.description"
->
+            >
             </w-textarea>
 
             <w-flex wrap align-center>
@@ -55,6 +55,8 @@ import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
 
 <script>
 import {createGroup} from "@/services/api";
+import {mapState} from "pinia";
+import {useAuthStore} from "@/stores/auth";
 
 export default {
     name: "GroupCreateForm",
@@ -76,7 +78,9 @@ export default {
             }
         }
     },
-
+    computed: {
+        ...mapState(useAuthStore, ['user']),
+    },
     methods: {
         onValidate() {
             this.form.sent = false
@@ -87,11 +91,16 @@ export default {
                 title: this.form.title,
                 city: this.form.city,
                 description: this.form.description,
+                users: [{
+                    user_id: this.user.id,
+                    role: 'admin'
+                }],
             };
+            console.log(formData)
             const response = await createGroup(formData);
             console.log('response', response)
             if (response) {
-                this.message =  `Группа успешно создана.
+                this.message = `Группа успешно создана.
                 Сейчас вы будете перенаправлены на страницу группы ${response.title}`
                 setTimeout(this.$router.push, 1500, {name: ""})
             }
