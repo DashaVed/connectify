@@ -38,7 +38,7 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                             <router-link :to="{name: 'profile', params: {id: user.id}}" class="menu-link">Посмотреть профиль</router-link>
                             <router-link :to="{name: 'account'}" class="menu-link">Настройки</router-link>
                             <w-divider class="ma3"/>
-                            <span @click="logout" class="menu-link">Выйти</span>
+                            <span @click="logoutUser" class="menu-link">Выйти</span>
                         </w-grid>
                     </w-toolbar>
                 </w-menu>
@@ -63,7 +63,11 @@ export default {
         ...mapState(useAuthStore, ['user', 'isAuth']),
     },
     methods: {
-        ...mapActions(useAuthStore, ['logout'])
+        ...mapActions(useAuthStore, ['logout']),
+        async logoutUser() {
+            this.logout();
+            this.$router.push({name: 'main'})
+        }
     }
 }
 </script>
