@@ -3,15 +3,6 @@ from rest_framework import serializers
 from web.models import User, Group, GroupParticipant
 
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
-
-
-class TokenResponseSerializer(serializers.Serializer):
-    token = serializers.CharField()
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

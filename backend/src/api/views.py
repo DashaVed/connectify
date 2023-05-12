@@ -1,8 +1,6 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from rest_framework import viewsets
 
-from api.serializers import TokenResponseSerializer, \
-    LoginSerializer, UserSerializer, GroupSerializer, GroupCreateSerializer
+from api.serializers import UserSerializer, GroupSerializer, GroupCreateSerializer
 from web.models import User, Group
 
 
