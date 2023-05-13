@@ -77,8 +77,6 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
 
 <script>
 import {getUser, updateUser} from "@/services/api";
-import {mapState} from "pinia";
-import {useAuthStore} from "@/stores/auth";
 
 export default {
     name: "UserEditForm",
@@ -107,9 +105,6 @@ export default {
                     'Нeправильная дата. Она должна быть формата mm-dd-yyyy',
             }
         }
-    },
-    computed: {
-        ...mapState(useAuthStore, ['user']),
     },
     methods: {
         onValidate() {
