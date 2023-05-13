@@ -83,7 +83,8 @@ export async function getUser(id) {
 
 export async function updateUser(userData) {
     try {
-        const response = await instance.put(`users/${useAuthStore().user.id}/`, userData);
+        const response = await instance.put(`users/${useAuthStore().user.id}/`, userData,
+            {headers: {"Content-Type": "multipart/form-data"}});
         return response.data;
     } catch(e) {
         console.log(e.response.data)

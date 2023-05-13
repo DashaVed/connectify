@@ -16,13 +16,14 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
                     <w-input
                             v-model="userImage"
                             type="file"
-                            accept=".jpg, .jpeg, .png, .gif, .svg" outline shadow>
+                            accept=".jpg, .jpeg, .png, .gif, .svg" outline shadow
+                    @change="onImageSelect">
                     </w-input>
                 </w-flex>
             </w-flex>
 
             <w-input
-                    class="my4"
+                    class="mt8 mb4"
                     label="Имя"
                     v-model="user.name"
                     :validators="[validators.required]"
@@ -32,6 +33,7 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
                     class="mb4"
                     label="Город"
                     v-model="user.city"
+                    :validators="[validators.required]"
                     outline>
             </w-input>
             <w-textarea
@@ -39,7 +41,6 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
                     no-autogrow
                     label="Напишите пару слов о себе"
                     class="mb5"
-                    :validators="[validators.required]"
                     v-model="user.description"
                     outline>
             </w-textarea>
@@ -115,6 +116,9 @@ export default {
             this.form.sent = false
             this.form.submitted = this.form.errorsCount === 0
         },
+        onImageSelect(event) {
+            this.userImage = event.target.files[0];
+        },
         dateIsValid(dateStr) {
             const regex = /^\d{4}-\d{2}-\d{2}$/;
             if (dateStr.match(regex) === null) {
@@ -126,28 +130,28 @@ export default {
         async load() {
             this.isLoading = false;
             this.user = await getUser();
-            console.log(this.user)
             this.isLoading = true;
         },
         async submitForm() {
-            const userData = {
-                name: this.user.name,
-                city: this.user.city,
-                description: this.user.description,
-                gender: this.user.gender,
-                birthday: this.user.birthday,
-
+            const userData = new FormData()
+            userData.append('name', this.user.name)
+            userData.append('city', this.user.city)
+            userData.append('description', this.user.description)
+            userData.append('gender', this.user.gender)
+            userData.append('birthday', this.user.birthday)
+            if (this.userImage) {
+                userData.append('image', this.userImage)
             }
             try {
                 await updateUser(userData);
                 this.message = 'Данные успешно обновлены.'
+                this.userImage = ''
                 this.form.isSuccess = true;
             } catch (e) {
                 this.message = 'Неправильно заполнены поля( Попробуйте еще раз.';
-                console.log(this.message)
                 this.form.isSuccess = false;
             }
-        }
+        },
     }
 }
 </script>
