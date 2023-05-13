@@ -13,7 +13,7 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
                 class="my3 text-light">
             {{ formEmail.message }}
         </w-alert>
-                <w-alert
+        <w-alert
                 v-if="formEmail.isSuccess === false"
                 error
                 no-border
@@ -37,14 +37,14 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
 
         <span class="title4 mt6">Смена пароля</span>
 
-                <w-alert
+        <w-alert
                 v-if="formPassword.isSuccess === true"
                 success
                 no-border
                 class="my3 text-light">
             {{ formPassword.message }}
         </w-alert>
-                <w-alert
+        <w-alert
                 v-if="formPassword.isSuccess === false"
                 error
                 no-border
@@ -52,7 +52,7 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
             {{ formPassword.message }}
         </w-alert>
 
-        <w-form method="post" class="my5"
+        <w-form class="my5"
                 v-model="formPassword.valid"
                 @submit.prevent="submitPasswordForm">
             <w-input
@@ -62,6 +62,7 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
                     :inner-icon-right="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
                     @click:inner-icon-right="isPassword = !isPassword"
                     :validators="[validators.required]"
+                    v-model="formPassword.old_password"
             >
             </w-input>
             <w-input
@@ -72,6 +73,8 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
                     :inner-icon-right="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
                     @click:inner-icon-right="isPassword = !isPassword"
                     :validators="[validators.required]"
+                    v-model="formPassword.new_password"
+
             >
             </w-input>
             <w-input
@@ -81,7 +84,9 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
                     :type="isPassword ? 'password' : 'text'"
                     :inner-icon-right="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
                     @click:inner-icon-right="isPassword = !isPassword"
-                    :validators="[validators.passwordsAccess]">
+                    :validators="[validators.passwordsAccess]"
+                    v-model="formPassword.re_new_password"
+            >
             </w-input>
             <SaveButton class="mt6" :disabled="formPassword.valid === false">Сменить пароль</SaveButton>
         </w-form>
@@ -89,7 +94,7 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
 </template>
 
 <script>
-import {getUser, updateUser} from "@/services/api";
+import {changePassword, getUser, updateUser} from "@/services/api";
 
 export default {
     name: "UserAuthEditForm",
@@ -129,20 +134,30 @@ export default {
         async submitEmailForm() {
             try {
                 await updateUser({email: this.user.email});
-                this.message = 'Email успешно обновлен.'
+                this.formEmail.message = 'Email успешно обновлен.'
                 this.formEmail.isSuccess = true;
             } catch (e) {
-                this.message = 'Неправильно заполнено поле. Попробуйте еще раз.';
+                this.formEmail.message = 'Неправильно заполнено поле. Попробуйте еще раз.';
                 this.formEmail.isSuccess = false;
             }
         },
         async submitPasswordForm() {
-            const formData = {
-                old_password: this.old_password,
-                new_password: this.new_password,
-                re_new_password: this.re_new_password,
+            if (this.formPassword.new_password !== this.formPassword.re_new_password) {
+                return
             }
-
+            const formData = {
+                old_password: this.formPassword.old_password,
+                new_password: this.formPassword.new_password,
+            }
+            try {
+                await changePassword(formData)
+                this.formPassword.message = 'Пароль успешно обновлен.'
+                this.formPassword.isSuccess = true;
+            }
+            catch (e) {
+                this.formPassword.message = e;
+                this.formPassword.isSuccess = false;
+            }
         },
     }
 }

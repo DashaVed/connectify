@@ -9,6 +9,26 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'name', 'city', 'gender', 'birthday', 'description', 'created_at', 'image']
 
 
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(write_only=True, required=True)
+    new_password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ["old_password", "new_password"]
+
+    def validate_old_password(self, password):
+        user = self.context['request'].user
+        if not user.check_password(password):
+            raise serializers.ValidationError("Текущий пароль введен неправильно. Попробуйте еще раз")
+        return password
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data["new_password"])
+        instance.save()
+        return instance
+
+
 class UserInGroupSerializer(serializers.ModelSerializer):
 
     class Meta:

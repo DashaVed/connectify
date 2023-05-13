@@ -56,6 +56,14 @@ export async function resetPasswordConfirm(formData) {
     }
 }
 
+export async function changePassword(formData) {
+    try {
+        return await instance.put(`auth/change/password/${useAuthStore().user.id}`, formData)
+    } catch(e) {
+        throw new Error(e.response.data.old_password)
+    }
+}
+
 export async function getProfile() {
     try {
         const response = await instance.get('auth/users/me/')
