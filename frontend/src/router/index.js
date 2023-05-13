@@ -7,7 +7,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'main',
-            component: () => import('../views/HomeView.vue'),
+            component: () => import('../views/MainView.vue'),
             meta: {unauthorizedAccess: true}
         },
         {
