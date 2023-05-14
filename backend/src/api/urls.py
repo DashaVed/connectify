@@ -2,7 +2,7 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
-from api.views import UserViewSet, GroupViewSet, ChangePasswordView
+from api.views import UserViewSet, GroupViewSet, ChangePasswordView, CategoryView
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
@@ -13,5 +13,6 @@ urlpatterns = [
                   path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
                   path('auth/', include('djoser.urls')),
                   path('auth/', include('djoser.urls.jwt')),
-                  path('auth/change/password/<int:pk>', ChangePasswordView.as_view(), name="change_password")
+                  path('auth/change/password/<int:pk>', ChangePasswordView.as_view(), name="change_password"),
+                  path('categories/', CategoryView.as_view(), name="category")
               ] + router.urls

@@ -1,8 +1,9 @@
-from rest_framework.generics import UpdateAPIView
+from rest_framework.generics import UpdateAPIView, ListAPIView
 from rest_framework import viewsets
 
-from api.serializers import UserSerializer, GroupSerializer, GroupCreateSerializer, ChangePasswordSerializer
-from web.models import User, Group
+from api.serializers import UserSerializer, GroupSerializer, GroupCreateSerializer, ChangePasswordSerializer, \
+    CategorySerializer
+from web.models import User, Group, Category
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -23,3 +24,8 @@ class GroupViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return GroupCreateSerializer
         return GroupSerializer
+
+
+class CategoryView(ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

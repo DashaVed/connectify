@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from web.models import User, Group, GroupParticipant
+from web.models import User, Group, GroupParticipant, Category
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -71,3 +71,10 @@ class GroupCreateSerializer(serializers.ModelSerializer):
             user = gp.pop('user')
             GroupParticipant.objects.create(**gp, user=user, group=group)
         return group
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = "__all__"
