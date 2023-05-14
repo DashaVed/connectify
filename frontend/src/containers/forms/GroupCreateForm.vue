@@ -43,7 +43,7 @@ import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
                     no-autogrow
                     resizable
                     label="Описание"
-                    class="mb5"
+                    class="my5"
                     v-model="form.description"
             >
             </w-textarea>
@@ -116,11 +116,11 @@ export default {
             };
             const response = await createGroup(formData);
             if (response) {
+                console.log(response.id)
                 this.message = `Группа успешно создана.
                 Сейчас вы будете перенаправлены на страницу группы ${response.title}`
-                setTimeout(this.$router.push, 1500, {name: ""})
+                setTimeout(this.$router.push, 2000, {name: "group", params: {id: response.id}})
             }
-
         }
     }
 }

@@ -13,3 +13,12 @@ export async function createGroup(formData) {
     console.log(response)
     throw new Error("Не получилось создать группу, попробуйте еще раз");
 }
+
+export async function getGroup(group_id) {
+    try {
+        const response = await instance.get(`groups/${group_id}`);
+        return response.data
+    } catch (e) {
+        console.log(e)
+    }
+}

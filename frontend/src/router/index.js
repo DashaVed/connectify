@@ -43,6 +43,11 @@ const router = createRouter({
             component: () => import('../views/ResetPasswordView.vue'),
             meta: {unauthorizedAccess: true}
         },
+        {
+            path: '/groups/:id(\\d+)',
+            name: 'group',
+            component: () => import('../views/GroupView.vue'),
+        },
     ]
 })
 
