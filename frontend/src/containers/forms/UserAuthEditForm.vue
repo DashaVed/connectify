@@ -94,7 +94,7 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
 </template>
 
 <script>
-import {changePassword, getUser, updateUser} from "@/services/api";
+import {changePassword, getUser, updateUser} from "@/services/userApi";
 
 export default {
     name: "UserAuthEditForm",

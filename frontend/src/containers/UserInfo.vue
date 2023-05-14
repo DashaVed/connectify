@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {getUser} from "@/services/api";
+import {getUser} from "@/services/userApi";
 
 
 export default {

@@ -46,7 +46,7 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
 </template>
 
 <script>
-import {resetPasswordConfirm} from "@/services/api";
+import {resetPasswordConfirm} from "@/services/userApi";
 
 export default {
     name: "ResetPasswordView",

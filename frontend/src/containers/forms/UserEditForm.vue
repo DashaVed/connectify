@@ -76,7 +76,7 @@ import {default as SaveButton} from "@/components/buttons/OrangeButton.vue"
 </template>
 
 <script>
-import {getUser, updateUser} from "@/services/api";
+import {getUser, updateUser} from "@/services/userApi";
 
 export default {
     name: "UserEditForm",

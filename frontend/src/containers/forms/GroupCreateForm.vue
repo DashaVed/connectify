@@ -54,7 +54,7 @@ import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
 </template>
 
 <script>
-import {createGroup} from "@/services/api";
+import {createGroup} from "@/services/groupApi";
 import {mapState} from "pinia";
 import {useAuthStore} from "@/stores/auth";
 

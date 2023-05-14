@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import {login as apiLogin, refreshUserToken, getProfile} from "@/services/api";
+import {login as apiLogin, refreshUserToken, getProfile} from "@/services/userApi";
 import {useTokenStore} from "@/stores/token";
 
 export const useAuthStore = defineStore('auth', {

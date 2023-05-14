@@ -102,7 +102,7 @@ import LoginLink from "@/components/Links/LoginLink.vue";
 </template>
 
 <script>
-import {registerUser} from "@/services/api";
+import {registerUser} from "@/services/userApi";
 
 export default {
     name: "RegistrationForm",

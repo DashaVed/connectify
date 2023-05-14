@@ -57,7 +57,7 @@ import {default as SendButton} from "@/components/buttons/OrangeButton.vue"
 </template>
 
 <script>
-import {resetPassword} from "@/services/api";
+import {resetPassword} from "@/services/userApi";
 
 export default {
     name: 'ResetPasswordForm',
