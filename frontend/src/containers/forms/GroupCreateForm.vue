@@ -33,6 +33,11 @@ import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
                     v-model="form.city"
                     :validators="[validators.required]">
             </w-input>
+            <div class="body mb2">Темы для группы</div>
+            <div class="checkbox-content">
+                <w-checkboxes color="deep-orange" v-model="form.categories" :items="categories" round
+                              inline></w-checkboxes>
+            </div>
             <w-textarea
                     rows="4"
                     no-autogrow
@@ -54,19 +59,24 @@ import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
 </template>
 
 <script>
-import {createGroup} from "@/services/groupApi";
+import {createGroup, getCategories} from "@/services/groupApi";
 import {mapState} from "pinia";
 import {useAuthStore} from "@/stores/auth";
 
 export default {
     name: "GroupCreateForm",
+    created() {
+        this.loadCategories()
+    },
     data() {
         return {
+            categories: [],
             message: '',
             form: {
                 title: '',
                 city: '',
                 description: '',
+                categories: [],
                 valid: null,
                 submitted: null,
                 sent: false,
@@ -86,19 +96,25 @@ export default {
             this.form.sent = false
             this.form.submitted = this.form.errorsCount === 0
         },
+        async loadCategories() {
+            let response = await getCategories()
+            response = response.data.results
+            for (let i = 0; i < response.length; i++) {
+                this.categories.push({label: response[i].title, value: response[i].id})
+            }
+        },
         async submitForm() {
             const formData = {
                 title: this.form.title,
                 city: this.form.city,
                 description: this.form.description,
+                categories: this.form.categories,
                 users: [{
                     user_id: this.user.id,
                     role: 'admin'
                 }],
             };
-            console.log(formData)
             const response = await createGroup(formData);
-            console.log('response', response)
             if (response) {
                 this.message = `Группа успешно создана.
                 Сейчас вы будете перенаправлены на страницу группы ${response.title}`
@@ -111,5 +127,7 @@ export default {
 </script>
 
 <style scoped>
-
+.checkbox-content {
+    width: 500px;
+}
 </style>

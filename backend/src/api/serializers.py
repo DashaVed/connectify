@@ -29,6 +29,13 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         return instance
 
 
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = "__all__"
+
+
 class UserInGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -38,10 +45,11 @@ class UserInGroupSerializer(serializers.ModelSerializer):
 
 class GroupSerializer(serializers.ModelSerializer):
     users = serializers.SerializerMethodField()
+    categories = CategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Group
-        fields = ['id', 'title', 'city', 'description', 'created_at', 'updated_at', 'users']
+        fields = ['id', 'title', 'city', 'description', 'created_at', 'updated_at', 'users', 'categories']
 
     def get_users(self, instance):
         group_participants = GroupParticipant.objects.filter(group=instance)
@@ -59,22 +67,17 @@ class UserInGroupRoleSerializer(serializers.ModelSerializer):
 
 class GroupCreateSerializer(serializers.ModelSerializer):
     users = UserInGroupRoleSerializer(many=True)
+    categories = CategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Group
-        fields = ['id', 'title', 'city', 'description', 'created_at', 'updated_at', 'users']
+        fields = ['id', 'title', 'city', 'description', 'created_at', 'updated_at', 'categories', 'users']
 
     def create(self, validated_data):
         group_participant = validated_data.pop('users')
         group = Group.objects.create(**validated_data)
+        group.categories.set(self.context["request"].data.get('categories'))
         for gp in group_participant:
             user = gp.pop('user')
             GroupParticipant.objects.create(**gp, user=user, group=group)
         return group
-
-
-class CategorySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Category
-        fields = "__all__"
