@@ -22,8 +22,9 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                                 v-if="!isMenuShow"
                                 @click="isMenuShow = !isMenuShow"
                                 class="pb1">mdi mdi-chevron-down
-                        </w-icon>
+                        </w-icon>!
                         <w-icon xl
+                                v-on="on"
                                 v-if="isMenuShow"
                                 @click="isMenuShow = !isMenuShow"
                                 color="deep-orange"
@@ -35,7 +36,9 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                             <router-link to="/" class="menu-link">Ваши мероприятия</router-link>
                             <router-link to="/" class="menu-link">Ваши группы</router-link>
                             <w-divider class="ma3"/>
-                            <router-link :to="{name: 'profile', params: {id: user.id}}" class="menu-link">Посмотреть профиль</router-link>
+                            <router-link :to="{name: 'profile', params: {id: user.id}}" class="menu-link">Посмотреть
+                                профиль
+                            </router-link>
                             <router-link :to="{name: 'account'}" class="menu-link">Настройки</router-link>
                             <w-divider class="ma3"/>
                             <span @click="logoutUser" class="menu-link">Выйти</span>
@@ -78,6 +81,7 @@ export default {
 .menu-link {
     color: var(--color-text);
 }
+
 .menu-link:hover, .menu-link:focus, .menu-link:active {
     color: var(--color-text-active);
 }
