@@ -22,7 +22,7 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                                 v-if="!isMenuShow"
                                 @click="isMenuShow = !isMenuShow"
                                 class="pb1">mdi mdi-chevron-down
-                        </w-icon>!
+                        </w-icon>
                         <w-icon xl
                                 v-on="on"
                                 v-if="isMenuShow"
