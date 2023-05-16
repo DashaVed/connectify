@@ -81,3 +81,16 @@ class GroupCreateSerializer(serializers.ModelSerializer):
             user = gp.pop('user')
             GroupParticipant.objects.create(**gp, user=user, group=group)
         return group
+
+
+# class GroupWithoutUserSerializer(serializers.ModelSerializer):
+#
+#     class Meta:
+#         model = Group
+#         fields = ["id", "title", "city"]
+
+
+class UserGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupParticipant
+        fields = "__all__"

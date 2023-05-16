@@ -88,7 +88,7 @@ class Group(BaseModel):
 
 class GroupParticipant(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='users', to_field='id')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, related_name="groups", on_delete=models.CASCADE)
     role = models.CharField(max_length=50, choices=ParticipantRole.choices)
 
     class Meta:
