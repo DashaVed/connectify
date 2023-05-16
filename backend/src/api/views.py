@@ -37,7 +37,11 @@ class UserGroupView(ListAPIView):
 
     def get_queryset(self):
         user_id = self.request.parser_context['kwargs']['pk']
-        return GroupParticipant.objects.filter(user_id=user_id)
+        role = self.request.query_params.get('role', None)
+        groups = GroupParticipant.objects.filter(user_id=user_id)
+        if role:
+            groups = GroupParticipant.objects.filter(role=role)
+        return groups
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()

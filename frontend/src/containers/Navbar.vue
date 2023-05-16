@@ -34,7 +34,7 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
                     <w-toolbar shadow content-class="pa10">
                         <w-grid columns="1">
                             <router-link to="/" class="menu-link">Ваши мероприятия</router-link>
-                            <router-link to="/" class="menu-link">Ваши группы</router-link>
+                            <router-link :to="{name: 'user_groups'}" class="menu-link">Ваши группы</router-link>
                             <w-divider class="ma3"/>
                             <router-link :to="{name: 'profile', params: {id: user.id}}" class="menu-link">Посмотреть
                                 профиль
