@@ -22,3 +22,12 @@ export async function getGroup(group_id) {
         console.log(e)
     }
 }
+
+export async function getUserGroup(user_id) {
+    try {
+        const response = await instance.get(`users/${user_id}/groups`);
+        return response.data
+    } catch (e) {
+        console.log(e)
+    }
+}

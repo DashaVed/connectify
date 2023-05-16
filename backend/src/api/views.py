@@ -45,6 +45,5 @@ class UserGroupView(ListAPIView):
         for data in serializer.data:
             group_id = data.get("group", None)
             group = get_object_or_404(Group, id=group_id)
-            print(group)
             data["group_info"] = {"title": group.title, "city": group.city}
         return Response(serializer.data)

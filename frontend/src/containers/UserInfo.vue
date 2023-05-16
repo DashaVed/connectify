@@ -1,5 +1,5 @@
 <template>
-    <div class="box xs8 pl12 pt8" v-if="isLoading">
+    <div class="box xs7 pl12 pt8" v-if="isLoading">
         <w-flex wrap class="mb8">
             <w-image :src="user.image" height="200" width="200"></w-image>
             <w-flex column>
