@@ -2,11 +2,12 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
-from api.views import UserViewSet, GroupViewSet, ChangePasswordView, CategoryView, UserGroupView
+from api.views import UserViewSet, GroupViewSet, ChangePasswordView, CategoryView, UserGroupView, MeetingViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
 router.register(r'groups', GroupViewSet, basename='groups')
+router.register(r'meetings', MeetingViewSet, basename='meetings')
 
 urlpatterns = [
                   path('schema/', SpectacularAPIView.as_view(), name='schema'),

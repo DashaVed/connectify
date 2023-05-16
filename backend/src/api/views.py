@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from api.serializers import UserSerializer, GroupSerializer, GroupCreateSerializer, ChangePasswordSerializer, \
-    CategorySerializer, UserGroupSerializer
-from web.models import User, Group, Category, GroupParticipant
+    CategorySerializer, GroupParticipantSerializer, MeetingCreateSerializer, MeetingSerializer
+from web.models import User, Group, Category, GroupParticipant, Meeting
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -33,7 +33,7 @@ class CategoryView(ListAPIView):
 
 
 class UserGroupView(ListAPIView):
-    serializer_class = UserGroupSerializer
+    serializer_class = GroupParticipantSerializer
 
     def get_queryset(self):
         user_id = self.request.parser_context['kwargs']['pk']
@@ -51,3 +51,13 @@ class UserGroupView(ListAPIView):
             group = get_object_or_404(Group, id=group_id)
             data["group_info"] = {"title": group.title, "city": group.city}
         return Response(serializer.data)
+
+
+class MeetingViewSet(viewsets.ModelViewSet):
+    queryset = Meeting.objects.all()
+    serializer_class = MeetingCreateSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return MeetingCreateSerializer
+        return MeetingSerializer

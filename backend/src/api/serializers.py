@@ -1,6 +1,7 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
-from web.models import User, Group, GroupParticipant, Category
+from web.models import User, Group, GroupParticipant, Category, MeetingParticipant, Meeting
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -83,14 +84,64 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         return group
 
 
-# class GroupWithoutUserSerializer(serializers.ModelSerializer):
-#
-#     class Meta:
-#         model = Group
-#         fields = ["id", "title", "city"]
-
-
-class UserGroupSerializer(serializers.ModelSerializer):
+class GroupParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = GroupParticipant
         fields = "__all__"
+
+
+class UserInMeetingRoleSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(write_only=True, source='user', queryset=User.objects.all())
+
+    class Meta:
+        model = MeetingParticipant
+        fields = ['user', 'user_id', 'role']
+
+
+class MeetingCreateSerializer(serializers.ModelSerializer):
+    users = UserInMeetingRoleSerializer(many=True)
+    group_id = serializers.PrimaryKeyRelatedField(write_only=True, source='group', queryset=Group.objects.all())
+
+    class Meta:
+        model = Meeting
+        fields = ['id', 'title', 'description', 'is_online', 'date', 'group_id', 'users']
+
+    def create(self, validated_data):
+        meeting_participant = validated_data.pop('users')
+        meeting = Meeting.objects.create(**validated_data)
+        for mp in meeting_participant:
+            user = mp.pop('user')
+            MeetingParticipant.objects.create(**mp, user=user, meeting=meeting)
+        return meeting
+
+
+class UserInMeetingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MeetingParticipant
+        fields = ['role', 'user']
+
+
+class GroupWithoutUser(serializers.ModelSerializer):
+
+    class Meta:
+        model = Group
+        fields = ['id', 'title', 'city']
+
+
+class MeetingSerializer(serializers.ModelSerializer):
+    users = serializers.SerializerMethodField()
+    group = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Meeting
+        fields = "__all__"
+
+    def get_users(self, instance):
+        meeting_participants = MeetingParticipant.objects.filter(meeting=instance)
+        return [UserInMeetingSerializer(user).data for user in meeting_participants]
+
+    def get_group(self, instance):
+        group = get_object_or_404(Group, id=instance.group_id)
+        return GroupWithoutUser(group).data
