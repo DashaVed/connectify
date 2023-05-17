@@ -105,7 +105,7 @@ class MeetingCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meeting
-        fields = ['id', 'title', 'description', 'is_online', 'date', 'group_id', 'users']
+        fields = ['id', 'title', 'location', 'description', 'is_online', 'date', 'group_id', 'users']
 
     def create(self, validated_data):
         meeting_participant = validated_data.pop('users')

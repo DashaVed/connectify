@@ -62,7 +62,12 @@ const router = createRouter({
                 }
                 return next(true)
             }
-        }
+        },
+        {
+            path: '/meetings/:id(\\d+)',
+            name: 'meeting',
+            component: () => import('../views/MeetingView.vue'),
+        },
     ]
 })
 

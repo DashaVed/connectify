@@ -8,3 +8,12 @@ export async function createMeeting(formData) {
     console.log(response)
     throw new Error("Не получилось создать встречу, попробуйте еще раз");
 }
+
+export async function getMeeting(meeting_id) {
+    try {
+        const response = await instance.get(`meetings/${meeting_id}`);
+        return response.data
+    } catch (e) {
+        console.log(e)
+    }
+}

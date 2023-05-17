@@ -16,7 +16,7 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
                 </w-alert>
             </w-transition-fade>
         </div>
-        <div>{{param1}}</div>
+        <div>{{ param1 }}</div>
         <w-form
                 v-model="form.valid"
                 v-model:errors-count="form.errorsCount"
@@ -32,12 +32,16 @@ import ResetButton from "@/components/buttons/ResetButton.vue";
                 <div class="body mr4">Это онлайн мероприятие?</div>
                 <w-switch class="mr6" color="deep-orange" thin v-model="form.is_online"></w-switch>
             </w-flex>
-
-            <w-input
+            <w-input v-if="!form.is_online"
                     label="Место проведения мероприятия"
                     class="mb5"
-                    v-model="form.location">
-            </w-input>
+                    v-model="form.location"
+                    :validators="[validators.required]"/>
+            <w-input v-if="form.is_online"
+                     label="Место проведения мероприятия"
+                     class="mb5"
+                     v-model="form.location"
+                     disabled/>
             <w-textarea
                     rows="4"
                     no-autogrow
@@ -103,6 +107,9 @@ export default {
             this.form.submitted = this.form.errorsCount === 0
         },
         async submitForm() {
+            if (this.form.is_online) {
+                this.form.location = "";
+            }
             const formData = {
                 title: this.form.title,
                 location: this.form.location,
@@ -121,7 +128,7 @@ export default {
                 Сейчас вы будете перенаправлены на её страницу ${response.title}`
                 setTimeout(this.$router.push, 2000, {name: "meeting", params: {id: response.id}})
             }
-        }
+        },
     }
 }
 </script>
