@@ -37,6 +37,11 @@ const router = createRouter({
             component: () => import('../views/ListGroupsOfUserView.vue'),
         },
         {
+            path: '/your-meetings',
+            name: 'user_meetings',
+            component: () => import('../views/ListMeetingsOfUserView.vue'),
+        },
+        {
             path: '/groups/create',
             name: 'create_group',
             component: () => import('../views/GroupCreateView.vue'),

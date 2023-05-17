@@ -2,7 +2,8 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
-from api.views import UserViewSet, GroupViewSet, ChangePasswordView, CategoryView, UserGroupView, MeetingViewSet
+from api.views import UserViewSet, GroupViewSet, ChangePasswordView, CategoryView, UserGroupView, MeetingViewSet, \
+    UserMeetingView
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
@@ -17,4 +18,5 @@ urlpatterns = [
                   path('auth/change/password/<int:pk>', ChangePasswordView.as_view(), name="change_password"),
                   path('categories/', CategoryView.as_view(), name="category"),
                   path('users/<int:pk>/groups', UserGroupView.as_view(), name="user_group"),
+                  path('users/<int:pk>/meetings', UserMeetingView.as_view(), name="user_meeting"),
               ] + router.urls

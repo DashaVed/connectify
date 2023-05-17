@@ -145,3 +145,9 @@ class MeetingSerializer(serializers.ModelSerializer):
     def get_group(self, instance):
         group = get_object_or_404(Group, id=instance.group_id)
         return GroupWithoutUser(group).data
+
+
+class MeetingParticipantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MeetingParticipant
+        fields = "__all__"

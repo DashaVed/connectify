@@ -93,7 +93,7 @@ import {useAuthStore} from "@/stores/auth";
 import {mapState} from "pinia";
 
 export default {
-    name: "UserGroupTable",
+    name: "UserGroupsTable",
     async created() {
         await this.loadGroup();
     },
