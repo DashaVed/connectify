@@ -45,7 +45,7 @@ class UserGroupView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = UserGroupSerializer(queryset, many=True)
+        serializer = GroupParticipantSerializer(queryset, many=True)
         for data in serializer.data:
             group_id = data.get("group", None)
             group = get_object_or_404(Group, id=group_id)

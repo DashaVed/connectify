@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import {useAuthStore} from "@/stores/auth";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,6 +52,17 @@ const router = createRouter({
             name: 'group',
             component: () => import('../views/GroupView.vue'),
         },
+        {
+            path: '/meetings/create',
+            name: 'create_meetings',
+            component: () => import('../views/MeetingCreateView.vue'),
+            beforeEnter: (to, from, next) => {
+                if (from.name !== 'user_groups') {
+                    return next({name: from.name})
+                }
+                return next(true)
+            }
+        }
     ]
 })
 

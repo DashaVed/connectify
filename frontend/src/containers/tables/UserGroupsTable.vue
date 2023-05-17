@@ -70,7 +70,7 @@
                             </w-flex>
                         </div>
                         <div class="pt6">
-                            <router-link :to="{name: 'main'}" class="body link mr12">
+                            <router-link :to="{name: 'create_meetings', query: {group: item.group}}" class="body link mr12">
                                 Добавить мероприятие
                             </router-link>
                             <w-icon color="indigo-deep6 mr6 pt1" md>mdi mdi-square-edit-outline</w-icon>
