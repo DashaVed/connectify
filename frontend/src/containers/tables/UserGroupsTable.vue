@@ -46,7 +46,11 @@
             :items="table.groupsAdmin"
             :loading="loading">
         <template #no-data>
-            Вы не состоите ни в одной из групп
+            <w-flex column>
+                <div class="body mb4">Пока вы не организовали ни одной группы</div>
+                <router-link :to="{name: 'create_group'}" class="link link-route">Создайте свою первую группу</router-link>
+            </w-flex>
+
         </template>
         <template #item="{ item, index, classes }">
             <tr
@@ -135,5 +139,9 @@ export default {
 
 .link:hover, .link:focus, .link:active {
     color: var(--color-text-active);
+}
+
+.link-route {
+    text-decoration: underline;
 }
 </style>

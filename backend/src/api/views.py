@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from api.serializers import UserSerializer, GroupSerializer, GroupCreateSerializer, ChangePasswordSerializer, \
     CategorySerializer, GroupParticipantSerializer, MeetingCreateSerializer, MeetingSerializer, \
-    MeetingParticipantSerializer
+    MeetingParticipantSerializer, GroupUpdateSerializer
 from web.models import User, Group, Category, GroupParticipant, Meeting, MeetingParticipant
 
 
@@ -20,11 +20,12 @@ class ChangePasswordView(UpdateAPIView):
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
-    serializer_class = GroupSerializer
 
     def get_serializer_class(self):
         if self.action == 'create':
             return GroupCreateSerializer
+        if self.action == 'update':
+            return GroupUpdateSerializer
         return GroupSerializer
 
 
@@ -87,3 +88,13 @@ class UserMeetingView(ListAPIView):
                 "is_online": meeting.is_online
             }
         return Response(serializer.data)
+
+
+class AddUserGroupView(UpdateAPIView):
+    serializer_class = GroupParticipantSerializer
+    queryset = GroupParticipant.objects.all()
+
+
+class AddUserMeetingView(UpdateAPIView):
+    serializer_class = MeetingParticipantSerializer
+    queryset = MeetingParticipant.objects.all()
