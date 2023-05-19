@@ -45,7 +45,7 @@ class UserGroupView(ListAPIView):
     def get_queryset(self):
         user_id = self.request.parser_context['kwargs']['pk']
         role = self.request.query_params.get('role', None)
-        groups = GroupParticipant.objects.filter(user_id=user_id)
+        groups = GroupParticipant.objects.filter(user_id=user_id).order_by("-id")
         if role:
             groups = GroupParticipant.objects.filter(role=role)
         return groups
@@ -75,7 +75,7 @@ class UserMeetingView(ListAPIView):
     def get_queryset(self):
         user_id = self.request.parser_context['kwargs']['pk']
         role = self.request.query_params.get('role', None)
-        meetings = MeetingParticipant.objects.filter(user_id=user_id)
+        meetings = MeetingParticipant.objects.filter(user_id=user_id).order_by("-id")
         if role:
             meetings = MeetingParticipant.objects.filter(role=role)
         return meetings
