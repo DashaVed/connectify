@@ -97,7 +97,7 @@ class GroupUpdateSerializer(serializers.ModelSerializer):
         instance.city = validated_data.get("city", instance.city)
         instance.description = validated_data.get("description", instance.description)
         instance.categories.set(validated_data.get('categories', []))
-        users = validated_data.pop('users')
+        users = validated_data.pop('users', [])
         if len(users) > 0:
             GroupParticipant.objects.create(role=users[0].pop('role'), user=users[0].pop('user'), group=instance)
         instance.save()
@@ -141,7 +141,7 @@ class MeetingChangeSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get("description", instance.description)
         instance.is_online = validated_data.get("is_online", instance.is_online)
         instance.date = validated_data.get("date", instance.date)
-        users = validated_data.pop('users')
+        users = validated_data.pop('users', [])
         if len(users) > 0:
             MeetingParticipant.objects.create(role=users[0].pop('role'), user=users[0].pop('user'), meeting=instance)
         instance.save()
