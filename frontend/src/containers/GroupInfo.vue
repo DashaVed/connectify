@@ -16,6 +16,9 @@ import DisabledButton from '@/components/buttons/DisabledButton.vue'
                     <w-icon color="deep-orange pb1">mdi mdi-account-group</w-icon>
                     Участников - {{ countUsers }}
                 </div>
+              <div class="categories-content mb8 ">
+              <w-tag class="my1 mr2" color="deep-orange" outline v-for="category in group.categories" :key="category.id">{{category.title}}</w-tag>
+              </div>
                 <div class="title3">Про что группа?</div>
                 <p class="body my4">{{ group.description }}</p>
             </div>
@@ -99,4 +102,7 @@ export default {
 </script>
 
 <style scoped>
+.categories-content {
+  width: 500px;
+}
 </style>
