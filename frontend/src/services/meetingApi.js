@@ -27,6 +27,17 @@ export async function getUserMeeting(user_id) {
     }
 }
 
+
+export async function deleteMeeting(meeting_id) {
+    try {
+        const response = await instance.delete(`meetings/${meeting_id}`);
+        return response.status
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
 export async function addUserToMeeting(data, meeting_id) {
     const response = await instance.put(`meetings/${meeting_id}/`, data);
     return response.status
