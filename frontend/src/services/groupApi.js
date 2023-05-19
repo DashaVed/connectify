@@ -32,6 +32,17 @@ export async function getUserGroup(user_id) {
     }
 }
 
+
+export async function deleteGroup(group_id) {
+    try {
+        const response = await instance.delete(`groups/${group_id}`);
+        return response.status
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
 export async function addUserToGroup(data, group_id) {
     const response = await instance.put(`groups/${group_id}/`, data);
     return response.status
