@@ -1,5 +1,6 @@
 <script setup>
 import {default as EnterButton} from '@/components/buttons/OrangeButton.vue'
+import DisabledButton from '@/components/buttons/DisabledButton.vue'
 </script>
 
 <template>
@@ -27,7 +28,8 @@ import {default as EnterButton} from '@/components/buttons/OrangeButton.vue'
             </div>
             <div class="box mr12 xs3">
                 <w-flex class=" mb10 justify-end">
-                    <EnterButton>Посетить мероприятие</EnterButton>
+                    <EnterButton v-if="!isJoined" @click="addUser">Посетить мероприятие</EnterButton>
+                    <DisabledButton v-if="isJoined">Вы участник мероприятия</DisabledButton>
                 </w-flex>
                 <div class="title3 mt8  text-right">Группа</div>
                 <w-card tile class="my3">
@@ -51,9 +53,11 @@ import {default as EnterButton} from '@/components/buttons/OrangeButton.vue'
 </template>
 
 <script>
-import {getMeeting} from "@/services/meetingApi";
+import {addUserToMeeting, getMeeting} from "@/services/meetingApi";
 import 'dayjs/locale/ru'
 import dayjs from "dayjs";
+import {mapState} from "pinia";
+import {useAuthStore} from "@/stores/auth";
 
 export default {
     name: "MeetingInfo",
@@ -67,6 +71,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(useAuthStore, ['user']),
         countUsers() {
             return this.meeting.users.length
         },
@@ -77,16 +82,40 @@ export default {
                 }
             }
         },
+        isJoined() {
+            for (const user of this.meeting.users) {
+                if (user.user === this.user.id) {
+                    return true
+                }
+            }
+            return false
+        },
         formatDate() {
             dayjs.locale('ru')
             return dayjs(this.meeting.date).format('ddd, D MMMM YYYY г. h:mm');
-        }
+        },
     },
     methods: {
         async loadMeeting() {
             this.isLoading = false;
             this.meeting = await getMeeting(this.$route.params.id);
             this.isLoading = true;
+        },
+        async addUser() {
+            const meeting = {
+                users: [
+                    {
+                        user_id: this.user.id,
+                        role: 'participant',
+                    }
+                ]
+            }
+            const responseStatus = await addUserToMeeting(meeting, this.$route.params.id);
+            if (responseStatus < 400) {
+                this.meeting.users.push({user: this.user.id, role: 'participant'})
+            } else {
+                console.log('error')
+            }
         }
     }
 }

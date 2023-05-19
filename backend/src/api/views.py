@@ -3,9 +3,16 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from api.serializers import UserSerializer, GroupSerializer, GroupCreateSerializer, ChangePasswordSerializer, \
-    CategorySerializer, GroupParticipantSerializer, MeetingCreateSerializer, MeetingSerializer, \
+    CategorySerializer, GroupParticipantSerializer, MeetingChangeSerializer, MeetingSerializer, \
     MeetingParticipantSerializer, GroupUpdateSerializer
 from web.models import User, Group, Category, GroupParticipant, Meeting, MeetingParticipant
+
+
+class EnablePartialUpdateMixin:
+
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -18,7 +25,7 @@ class ChangePasswordView(UpdateAPIView):
     serializer_class = ChangePasswordSerializer
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class GroupViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
     queryset = Group.objects.all()
 
     def get_serializer_class(self):
@@ -55,13 +62,12 @@ class UserGroupView(ListAPIView):
         return Response(serializer.data)
 
 
-class MeetingViewSet(viewsets.ModelViewSet):
+class MeetingViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
     queryset = Meeting.objects.all()
-    serializer_class = MeetingCreateSerializer
 
     def get_serializer_class(self):
-        if self.action == 'create':
-            return MeetingCreateSerializer
+        if self.action == 'create' or self.action == 'update':
+            return MeetingChangeSerializer
         return MeetingSerializer
 
 

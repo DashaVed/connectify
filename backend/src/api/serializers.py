@@ -94,15 +94,12 @@ class GroupUpdateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
-        print(instance.title)
         instance.city = validated_data.get("city", instance.city)
         instance.description = validated_data.get("description", instance.description)
         instance.categories.set(validated_data.get('categories', []))
         users = validated_data.pop('users')
         if len(users) > 0:
-            user = users[0].pop('user')
-            role = users[0].pop('role')
-            GroupParticipant.objects.create(role=role, user=user, group=instance)
+            GroupParticipant.objects.create(role=users[0].pop('role'), user=users[0].pop('user'), group=instance)
         instance.save()
         return instance
 
@@ -122,7 +119,7 @@ class UserInMeetingRoleSerializer(serializers.ModelSerializer):
         fields = ['user', 'user_id', 'role']
 
 
-class MeetingCreateSerializer(serializers.ModelSerializer):
+class MeetingChangeSerializer(serializers.ModelSerializer):
     users = UserInMeetingRoleSerializer(many=True)
     group_id = serializers.PrimaryKeyRelatedField(write_only=True, source='group', queryset=Group.objects.all())
 
@@ -137,6 +134,20 @@ class MeetingCreateSerializer(serializers.ModelSerializer):
             user = mp.pop('user')
             MeetingParticipant.objects.create(**mp, user=user, meeting=meeting)
         return meeting
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get("title", instance.title)
+        instance.location = validated_data.get("location", instance.location)
+        instance.description = validated_data.get("description", instance.description)
+        instance.is_online = validated_data.get("is_online", instance.is_online)
+        instance.date = validated_data.get("date", instance.date)
+        users = validated_data.pop('users')
+        if len(users) > 0:
+            MeetingParticipant.objects.create(role=users[0].pop('role'), user=users[0].pop('user'), meeting=instance)
+        instance.save()
+        return instance
+
+
 
 
 class UserInMeetingSerializer(serializers.ModelSerializer):
