@@ -1,6 +1,6 @@
 import factory
 
-from web.models import User, Category, Group
+from web.models import User, Category, Group, Meeting
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -26,4 +26,16 @@ class GroupFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Group
+
+
+class MeetingFactory(factory.django.DjangoModelFactory):
+    title = factory.Faker('name')
+    location = factory.Faker("address")
+    description = factory.Faker('text')
+    date = factory.Faker("date_time")
+    group = factory.SubFactory(GroupFactory)
+
+    class Meta:
+        model = Meeting
+
 

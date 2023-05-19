@@ -1,7 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 
-from api.tests.factories import UserFactory, GroupFactory, CategoryFactory
+from api.tests.factories import UserFactory, GroupFactory, CategoryFactory, MeetingFactory
 
 
 @pytest.fixture
@@ -22,3 +22,8 @@ def group():
 @pytest.fixture
 def category():
     return CategoryFactory()
+
+
+@pytest.fixture
+def meeting():
+    return MeetingFactory()
