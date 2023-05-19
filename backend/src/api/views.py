@@ -92,13 +92,3 @@ class UserMeetingView(ListAPIView):
                 "is_online": meeting.is_online
             }
         return Response(serializer.data)
-
-
-class AddUserGroupView(UpdateAPIView):
-    serializer_class = GroupParticipantSerializer
-    queryset = GroupParticipant.objects.all()
-
-
-class AddUserMeetingView(UpdateAPIView):
-    serializer_class = MeetingParticipantSerializer
-    queryset = MeetingParticipant.objects.all()
