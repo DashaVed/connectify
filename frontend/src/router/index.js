@@ -10,6 +10,11 @@ const router = createRouter({
             meta: {unauthorizedAccess: true}
         },
         {
+            path: '/home',
+            name: "home",
+            component: () => import('../views/HomeView.vue'),
+        },
+        {
             path: '/register',
             name: 'registration',
             component: () => import('../views/RegistrationView.vue'),
@@ -73,6 +78,11 @@ const router = createRouter({
             name: 'meeting',
             component: () => import('../views/MeetingView.vue'),
         },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'notFound',
+            component: () => import('../views/NotFound.vue')
+        }
     ]
 })
 
