@@ -17,6 +17,6 @@ urlpatterns = [
                   path('auth/', include('djoser.urls.jwt')),
                   path('auth/change/password/<int:pk>', ChangePasswordView.as_view(), name="change_password"),
                   path('categories/', CategoryView.as_view(), name="category"),
-                  path('users/<int:pk>/groups', UserGroupView.as_view(), name="user_group"),
-                  path('users/<int:pk>/meetings', UserMeetingView.as_view(), name="user_meeting"),
+                  path('users/<int:pk>/groups', UserGroupView.as_view(), name="user_groups"),
+                  path('users/<int:pk>/meetings', UserMeetingView.as_view(), name="user_meetings"),
               ] + router.urls

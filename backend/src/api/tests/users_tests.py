@@ -58,3 +58,17 @@ def test_user_change_password(api_client):
 
     assert response.status_code == status.HTTP_200_OK
     assert user.check_password("fdsarewq") is True
+
+
+@pytest.mark.django_db
+def test_user_groups(api_client, user):
+    response = api_client.get(reverse("user_groups", args=(user.id, )))
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data) == 0
+
+
+@pytest.mark.django_db
+def test_user_meetings(api_client, user):
+    response = api_client.get(reverse("user_meetings", args=(user.id, )))
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data) == 0
