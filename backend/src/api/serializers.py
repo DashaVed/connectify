@@ -66,7 +66,7 @@ class UserInGroupRoleSerializer(serializers.ModelSerializer):
         fields = ['user', 'user_id', 'role']
 
 
-class GroupCreateSerializer(serializers.ModelSerializer):
+class GroupChangeSerializer(serializers.ModelSerializer):
     users = UserInGroupRoleSerializer(many=True)
     categories = CategorySerializer(many=True, read_only=True)
 
@@ -83,20 +83,13 @@ class GroupCreateSerializer(serializers.ModelSerializer):
             GroupParticipant.objects.create(**gp, user=user, group=group)
         return group
 
-
-class GroupUpdateSerializer(serializers.ModelSerializer):
-    users = UserInGroupRoleSerializer(many=True)
-    # categories = CategorySerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Group
-        fields = ['id', 'title', 'city', 'description', 'created_at', 'updated_at', 'users']
-
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
         instance.city = validated_data.get("city", instance.city)
         instance.description = validated_data.get("description", instance.description)
-        instance.categories.set(validated_data.get('categories', []))
+        new_categories = self.context["request"].data.get('categories', None)
+        if new_categories:
+            instance.categories.set(new_categories)
         users = validated_data.pop('users', [])
         if len(users) > 0:
             GroupParticipant.objects.create(role=users[0].pop('role'), user=users[0].pop('user'), group=instance)

@@ -2,9 +2,9 @@ from rest_framework.generics import UpdateAPIView, ListAPIView, get_object_or_40
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from api.serializers import UserSerializer, GroupSerializer, GroupCreateSerializer, ChangePasswordSerializer, \
+from api.serializers import UserSerializer, GroupSerializer, GroupChangeSerializer, ChangePasswordSerializer, \
     CategorySerializer, GroupParticipantSerializer, MeetingChangeSerializer, MeetingSerializer, \
-    MeetingParticipantSerializer, GroupUpdateSerializer
+    MeetingParticipantSerializer
 from web.models import User, Group, Category, GroupParticipant, Meeting, MeetingParticipant
 
 
@@ -29,10 +29,8 @@ class GroupViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
     queryset = Group.objects.all()
 
     def get_serializer_class(self):
-        if self.action == 'create':
-            return GroupCreateSerializer
-        if self.action == 'update':
-            return GroupUpdateSerializer
+        if self.action == 'create' or self.action == 'update':
+            return GroupChangeSerializer
         return GroupSerializer
 
 
