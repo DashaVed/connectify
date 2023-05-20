@@ -1,4 +1,5 @@
 <script setup>
+import formatDate from "@/services/services"
 import {default as EnterButton} from '@/components/buttons/OrangeButton.vue'
 import DisabledButton from '@/components/buttons/DisabledButton.vue'
 </script>
@@ -9,7 +10,7 @@ import DisabledButton from '@/components/buttons/DisabledButton.vue'
             <div class="box ml12 xs6">
                 <div class="title1 text-bold">{{ meeting.title }}</div>
                 <div class="title3 mt4 mb8">
-                    {{ formatDate }}
+                    {{ formatDate(this.meeting.date) }}
                 </div>
                 <div v-if="meeting.is_online">
                     <w-icon color="deep-orange pb1 mr4" lg>mdi mdi-video</w-icon>
@@ -54,8 +55,6 @@ import DisabledButton from '@/components/buttons/DisabledButton.vue'
 
 <script>
 import {addUserToMeeting, getMeeting} from "@/services/meetingApi";
-import 'dayjs/locale/ru'
-import dayjs from "dayjs";
 import {mapState} from "pinia";
 import {useAuthStore} from "@/stores/auth";
 
@@ -89,10 +88,6 @@ export default {
                 }
             }
             return false
-        },
-        formatDate() {
-            dayjs.locale('ru')
-            return dayjs(this.meeting.date).format('ddd, D MMMM YYYY г. h:mm');
         },
     },
     methods: {

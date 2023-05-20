@@ -1,5 +1,5 @@
 <script setup>
-
+import formatDate from "@/services/services"
 </script>
 
 <template>
@@ -110,10 +110,6 @@ export default {
     ...mapState(useAuthStore, ['user']),
   },
   methods: {
-    formatDate(value) {
-      dayjs.locale('ru')
-      return dayjs(value).format('D MMMM YYYY г. h:mm');
-    },
     async loadMeeting() {
       this.loading = true;
       const response = await getUserMeeting(this.user.id)
