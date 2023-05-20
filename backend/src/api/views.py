@@ -59,7 +59,11 @@ class UserGroupView(ListAPIView):
 
 
 class MeetingViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
-    queryset = Meeting.objects.filter(date__gte=datetime.now()).order_by("-created_at")
+
+    def get_queryset(self):
+        if self.action == 'list':
+            return Meeting.objects.filter(date__gte=datetime.now()).order_by("-created_at")
+        return Meeting.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'create' or self.action == 'update':
