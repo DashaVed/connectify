@@ -20,7 +20,7 @@ export async function getMeeting(meeting_id) {
 
 export async function getUserMeeting(user_id) {
     try {
-        const response = await instance.get(`users/${user_id}/meetings`);
+        const response = await instance.get(`users/${user_id}/meetings?date=now`);
         return response.data
     } catch (e) {
         console.log(e)

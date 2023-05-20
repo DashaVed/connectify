@@ -18,7 +18,7 @@ export default {
     mounted() {
         setInterval(() => {
             this.refreshToken()
-        }, 17500)
+        }, 175000)
     },
     methods: mapActions(useAuthStore, ['refreshToken', 'load'])
 }

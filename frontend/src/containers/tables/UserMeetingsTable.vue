@@ -117,7 +117,11 @@ export default {
     async loadMeeting() {
       this.loading = true;
       const response = await getUserMeeting(this.user.id)
+      console.log(response)
       for (const meeting of response) {
+        if (!meeting["meeting_info"]) {
+          continue;
+        }
         if (meeting['role'] === 'admin') {
           this.table.meetingsAdmin.push(meeting)
         } else {

@@ -104,7 +104,7 @@ export default {
             try {
                 await this.login(this.form.email, this.form.password)
                 await nextTick()
-                this.$router.push({name: "main"})
+                this.$router.push({name: "home"})
             } catch {
                 this.form.isWrong = true;
             }

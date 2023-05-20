@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework.generics import UpdateAPIView, ListAPIView, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -26,7 +28,7 @@ class ChangePasswordView(UpdateAPIView):
 
 
 class GroupViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
-    queryset = Group.objects.all()
+    queryset = Group.objects.all().order_by("-created_at")
 
     def get_serializer_class(self):
         if self.action == 'create' or self.action == 'update':
@@ -44,11 +46,7 @@ class UserGroupView(ListAPIView):
 
     def get_queryset(self):
         user_id = self.request.parser_context['kwargs']['pk']
-        role = self.request.query_params.get('role', None)
-        groups = GroupParticipant.objects.filter(user_id=user_id).order_by("-id")
-        if role:
-            groups = GroupParticipant.objects.filter(role=role)
-        return groups
+        return GroupParticipant.objects.filter(user_id=user_id).order_by("-id")
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -61,7 +59,7 @@ class UserGroupView(ListAPIView):
 
 
 class MeetingViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
-    queryset = Meeting.objects.all()
+    queryset = Meeting.objects.all().order_by("-created_at")
 
     def get_serializer_class(self):
         if self.action == 'create' or self.action == 'update':
@@ -74,21 +72,21 @@ class UserMeetingView(ListAPIView):
 
     def get_queryset(self):
         user_id = self.request.parser_context['kwargs']['pk']
-        role = self.request.query_params.get('role', None)
-        meetings = MeetingParticipant.objects.filter(user_id=user_id).order_by("-id")
-        if role:
-            meetings = MeetingParticipant.objects.filter(role=role)
-        return meetings
+        return MeetingParticipant.objects.filter(user_id=user_id).order_by("-id")
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = MeetingParticipantSerializer(queryset, many=True)
+        meetings = Meeting.objects.all()
+        if self.request.query_params.get('date', None):
+            meetings = Meeting.objects.filter(date__gte=datetime.now())
+
         for data in serializer.data:
-            meeting_id = data.get("meeting", None)
-            meeting = get_object_or_404(Meeting, id=meeting_id)
-            data["meeting_info"] = {
-                "title": meeting.title,
-                "date": meeting.date,
-                "is_online": meeting.is_online
-            }
+            meeting = meetings.filter(id=data.get("meeting", None))
+            if meeting:
+                data["meeting_info"] = {
+                    "title": meeting[0].title,
+                    "date": meeting[0].date,
+                    "is_online": meeting[0].is_online
+                }
         return Response(serializer.data)
