@@ -9,6 +9,10 @@ export async function createMeeting(formData) {
     throw new Error("Не получилось создать встречу, попробуйте еще раз");
 }
 
+export async function getMeetings() {
+    return await instance.get('meetings/')
+}
+
 export async function getMeeting(meeting_id) {
     try {
         const response = await instance.get(`meetings/${meeting_id}`);
