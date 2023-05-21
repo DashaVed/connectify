@@ -1,6 +1,8 @@
 ## Запуск backend'а
 ___
 
+
+- `docker composer up -d` - поднять PostgreSQL с помощью Docker
 - `poetry init` - установка зависимостей
 - `poetry shell` - вход в виртуальное окружение
 - `python src/manage.py migrate` - выполнить миграции
