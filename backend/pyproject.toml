@@ -26,5 +26,9 @@ redis = "^4.5.5"
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poe￼
+￼
+￼
+￼
+try-core"]
 build-backend = "poetry.core.masonry.api"

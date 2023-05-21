@@ -157,6 +157,9 @@ EMAIL_HOST_PASSWORD = 'dkwkqsohknivcwri'
 EMAIL_SERVER = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", 'redis://localhost:6379/0')
+CELERY_BEAT_SCHEDULER = os.environ.get("CELERY_BEAT_SCHEDULER", 'django_celery_beat.schedulers:DatabaseScheduler')
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
