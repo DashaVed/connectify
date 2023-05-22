@@ -1,25 +1,26 @@
-from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import get_object_or_404
-from django.template import Context
-from django.template.loader import get_template
 
 from main.celery import app
-from web.models import Meeting, GroupParticipant, User
+from web.models import Meeting, GroupParticipant
+from web.sevices import get_recipient_lists, send_email
 
 
 @app.task
 def send_create_meeting_email(meeting_id):
     meeting = get_object_or_404(Meeting, id=meeting_id)
-    html_content = get_template('emails/meeting_create_email.html').render({'meeting': meeting})
-    group_participants = GroupParticipant.objects.filter(meeting=meeting_id, role='participant')
-    to_emails = []
-    for gp in group_participants:
-        user = get_object_or_404(User, id=gp.user)
-        to_emails.append(user.email)
-
-    subject = f'Новая встреча в группе {meeting.group.title}'
-
+    to_emails = get_recipient_lists(GroupParticipant.objects.filter(group=meeting.group.id, role='participant'))
     if to_emails:
-        msg = EmailMultiAlternatives(subject, '', 'dasha.test93@gmail.com', to_emails)
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        subject = f'Новая встреча в группе {meeting.group.title}'
+        send_email(template_name='emails/meeting_create_email.html', subject=subject,
+                   contex={'meeting': meeting}, to_emails=to_emails)
+        print('email sent')
+
+
+@app.task
+def send_delete_meeting_email(meeting):
+    pass
+
+
+@app.task
+def send_delete_group_email(group_title):
+    pass
