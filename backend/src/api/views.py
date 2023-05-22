@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.core import serializers
 from rest_framework.generics import UpdateAPIView, ListAPIView, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -8,7 +9,7 @@ from api.serializers import UserSerializer, GroupSerializer, GroupChangeSerializ
     CategorySerializer, GroupParticipantSerializer, MeetingChangeSerializer, MeetingSerializer, \
     MeetingParticipantSerializer
 from web.models import User, Group, Category, GroupParticipant, Meeting, MeetingParticipant
-from web.tasks import send_create_meeting_email
+from web.tasks import send_create_meeting_email, send_delete_meeting_email
 
 
 class EnablePartialUpdateMixin:
@@ -76,6 +77,17 @@ class MeetingViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
         if response.status_code == 201:
             send_create_meeting_email.delay(response.data['id'])
         return response
+
+    def destroy(self, request, *args, **kwargs):
+        meeting_object = get_object_or_404(Meeting, id=self.request.parser_context['kwargs']['pk'])
+        meeting = serializers.serialize("json", Meeting.objects.filter(id=self.request.parser_context['kwargs']['pk']),
+                                        fields=["title", "date"])
+        meeting_participants = serializers.serialize("json",
+                                                     MeetingParticipant.objects.filter(meeting=meeting_object.id,
+                                                                                       role='participant'),
+                                                     fields=["user"])
+        send_delete_meeting_email.delay(meeting, meeting_participants)
+        return super().destroy(request, *args, **kwargs)
 
 
 class UserMeetingView(ListAPIView):

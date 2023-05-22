@@ -1,11 +1,18 @@
 from django.core.mail import EmailMultiAlternatives
+from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 
+from web.models import User
 
-def get_recipient_lists(participants):
+
+def get_recipient_lists(participants, is_email=True):
     to_emails = []
     for participant in participants:
-        to_emails.append(participant.user.email)
+        if is_email:
+            to_emails.append(participant.user.email)
+        else:
+            user = get_object_or_404(User, id=participant["fields"]["user"])
+            to_emails.append(user.email)
     return to_emails
 
 
