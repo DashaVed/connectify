@@ -1,6 +1,4 @@
 from datetime import datetime
-
-from django.core import serializers
 from rest_framework.generics import UpdateAPIView, ListAPIView, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -9,7 +7,8 @@ from api.serializers import UserSerializer, GroupSerializer, GroupChangeSerializ
     CategorySerializer, GroupParticipantSerializer, MeetingChangeSerializer, MeetingSerializer, \
     MeetingParticipantSerializer
 from web.models import User, Group, Category, GroupParticipant, Meeting, MeetingParticipant
-from web.tasks import send_create_meeting_email, send_delete_meeting_email
+from web.services import get_meeting_data_for_email, get_group_data_for_email
+from web.tasks import send_create_meeting_email, send_delete_meeting_email, send_delete_group_email
 
 
 class EnablePartialUpdateMixin:
@@ -36,6 +35,11 @@ class GroupViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
         if self.action == 'create' or self.action == 'update':
             return GroupChangeSerializer
         return GroupSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        group_str, group_participant_str = get_group_data_for_email(self.request.parser_context['kwargs']['pk'])
+        send_delete_group_email.delay(group_str, group_participant_str)
+        return super().destroy(request, *args, **kwargs)
 
 
 class CategoryView(ListAPIView):
@@ -79,14 +83,8 @@ class MeetingViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
         return response
 
     def destroy(self, request, *args, **kwargs):
-        meeting_object = get_object_or_404(Meeting, id=self.request.parser_context['kwargs']['pk'])
-        meeting = serializers.serialize("json", Meeting.objects.filter(id=self.request.parser_context['kwargs']['pk']),
-                                        fields=["title", "date"])
-        meeting_participants = serializers.serialize("json",
-                                                     MeetingParticipant.objects.filter(meeting=meeting_object.id,
-                                                                                       role='participant'),
-                                                     fields=["user"])
-        send_delete_meeting_email.delay(meeting, meeting_participants)
+        meeting_str, meeting_participant_str = get_meeting_data_for_email(self.request.parser_context['kwargs']['pk'])
+        send_delete_meeting_email.delay(meeting_str, meeting_participant_str)
         return super().destroy(request, *args, **kwargs)
 
 
