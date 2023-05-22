@@ -12,21 +12,23 @@ import MeetingCard from "@/components/MeetingCard.vue";
       <MeetingCard :meetings="todayMeetings" :date-input="dateInput" />
       <div class="box days">
         <div class="title3 my4">Ближайшие дни</div>
-      <MeetingCard :meetings="meetings" :date-input="dateInput" />
+        <MeetingCard :meetings="meetings" :date-input="dateInput" />
       </div>
     </div>
 
-      <div class="box next-days" v-else>
-        <div class="title3 my4">{{ formatDate(dateInput) }}</div>
-        <MeetingCard :meetings="getDayMeeting()" :date-input="dateInput" />
-      </div>
+    <div class="box next-days" v-else>
+      <div class="title3 my4">{{ formatDate(dateInput) }}</div>
+      <MeetingCard :meetings="getDayMeeting()" :date-input="dateInput" />
+    </div>
 
 
   </div>
 </template>
 
 <script>
-import { getMeetings } from "@/services/meetingApi";
+import { getUserMeeting } from "@/services/meetingApi";
+import { mapState } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 
 export default {
   name: "MeetingListInHome",
@@ -41,28 +43,32 @@ export default {
       todayMeetings: []
     };
   },
+  computed: {
+    ...mapState(useAuthStore, ["user"])
+  },
   methods: {
     getDayMeeting() {
-      let meetings = []
+      let meetings = [];
       for (const meeting of this.meetings) {
         const date = new Date(meeting.date).setHours(0, 0, 0, 0);
         if (date === this.dateInput.setHours(0, 0, 0, 0)) {
           meetings.push(meeting);
         }
       }
-      return meetings
+      return meetings;
     },
     async getListOfMeetings() {
       this.isLoading = false;
-      const response = await getMeetings();
+      const response = await getUserMeeting(this.user.id);
       const today = new Date().setHours(0, 0, 0, 0);
-
-      for (const meeting of response.data.results) {
-        const date = new Date(meeting.date).setHours(0, 0, 0, 0);
-        if (date === today) {
-          this.todayMeetings.push(meeting);
-        } else {
-          this.meetings.push(meeting);
+      if (response.data) {
+        for (const meeting of response.data.results) {
+          const date = new Date(meeting.date).setHours(0, 0, 0, 0);
+          if (date === today) {
+            this.todayMeetings.push(meeting);
+          } else {
+            this.meetings.push(meeting);
+          }
         }
       }
       this.isLoading = true;
