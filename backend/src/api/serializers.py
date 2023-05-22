@@ -141,8 +141,6 @@ class MeetingChangeSerializer(serializers.ModelSerializer):
         return instance
 
 
-
-
 class UserInMeetingSerializer(serializers.ModelSerializer):
 
     class Meta:

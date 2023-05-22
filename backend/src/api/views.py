@@ -8,6 +8,7 @@ from api.serializers import UserSerializer, GroupSerializer, GroupChangeSerializ
     CategorySerializer, GroupParticipantSerializer, MeetingChangeSerializer, MeetingSerializer, \
     MeetingParticipantSerializer
 from web.models import User, Group, Category, GroupParticipant, Meeting, MeetingParticipant
+from web.tasks import send_create_meeting_email
 
 
 class EnablePartialUpdateMixin:
@@ -69,6 +70,12 @@ class MeetingViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
         if self.action == 'create' or self.action == 'update':
             return MeetingChangeSerializer
         return MeetingSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        if response.status_code == 201:
+            send_create_meeting_email.delay(response.data['id'])
+        return response
 
 
 class UserMeetingView(ListAPIView):
