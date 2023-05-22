@@ -552,17 +552,6 @@ files = [
 Django = ">=3.2"
 
 [[package]]
-name = "django-mail-templated"
-version = "2.6.5"
-description = "Send emails using Django template system"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "django-mail-templated-2.6.5.tar.gz", hash = "sha256:2ce4b415d97f50587d9f9ff395b01e919539e1734b6b6f84385f4d2e6d3db7b5"},
-]
-
-[[package]]
 name = "django-templated-mail"
 version = "1.1.1"
 description = "Send emails using Django template system."
@@ -1457,4 +1446,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "df1566a15a81fe308ccb08002f684e43d367f2b2f0d9e0cf227abb3538fe94d7"
+content-hash = "07d3af34ef32363ae8b1a374ee4b2f10a56a3c36bd0aea08580338031687d09e"
