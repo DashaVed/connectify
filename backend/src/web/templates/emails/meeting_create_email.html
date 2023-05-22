@@ -1,3 +1,4 @@
+{% load tz %}
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -23,15 +24,16 @@
                 <tr>
                   <td style="padding:0 0 36px 0;color:#032540;">
                     <h1 style="font-size:24px;margin:0 0 28px 0;font-family:Arial,sans-serif;">{{ meeting.title }}</h1>
-                    <p style="margin:12px 0 40px 0;font-size:20px;line-height:24px;font-family:Arial,sans-serif;">{{ meeting.date }}</p>
+                    <p style="margin:12px 0 40px 0;font-size:20px;line-height:24px;font-family:Arial,sans-serif;">{{ meeting.date|localtime|date:"d F Y" }} в {{ meeting.date|localtime|time:"H:i" }}</p>
+                    <p style="margin:10px 0 10px 0;font-size:20px;line-height:24px;font-family:Arial,sans-serif;">О чем мероприятие?</p>
                     <p style="margin:0 0 60px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">{{ meeting.description }}</p>
                     <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;;text-align:center;">
-                      <a href="http://localhost:5173/meetings/{{ meeting.id }}" style="width:100px;padding:14px;border:1px solid #ff6825;border-radius:5px;background:#ff6825;color:white;">Посетить мероприятие</a></p>
+                      <a href="http://localhost:5173/meetings/{{ meeting.id }}" style="width:100px;padding:12px;border:1px solid #ff6825;border-radius:5px;background:#ff6825;color:white;text-decoration: none">Посетить мероприятие</a></p>
                   </td>
                 </tr>
               </table>
         <tr>
-          <td style="padding:16px;width:50%;background:#f2f2f2;">
+          <td style="padding:16px;width:50%;background:#E7E7E7;">
               <a href="http://localhost:5173" style="margin:0;font-size:20px;font-family:Arial,sans-serif;color:#032540;text-decoration: none;">Connectify</a>
           </td>
         </tr>

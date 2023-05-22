@@ -14,18 +14,20 @@
 <body style="margin:0;padding:0;">
 <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
   <tr>
-    <td style="padding:0;">
+    <td align="center" style="padding:0;">
       <table role="presentation"
-             style="width:100%;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
+             style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
         <tr>
             <td style="padding:36px 30px 42px 30px;">
               <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;">
                 <tr>
                   <td style="padding:0 0 36px 0;color:#032540;">
-                    <h1 style="font-size:24px;margin:0 0 28px 0;font-family:Arial,sans-serif;">Организатор решил отменить встречу - {{ meeting.title }}</h1>
-                    <p style="margin:12px 0 40px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Встреча должна была пройти {{ meeting.date }}</p>
+                    <h1 style="font-size:24px;margin:0 0 28px 0;font-family:Arial,sans-serif;">{{ meeting.title }}</h1>
+                    <p style="margin:12px 0 40px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Не забудьте про мероприятие завтра в {{ meeting.date|time }}</p>
+                    <p style="margin:0 0 10px 0;font-size:20px;line-height:24px;font-family:Arial,sans-serif;">О чем мероприятие?</p>
+                    <p style="margin:0 0 60px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">{{ meeting.description }}</p>
                     <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;;text-align:center;">
-                      <a href="http://localhost:5173/" style="width:100px;padding:12px;border:1px solid #ff6825;border-radius:5px;background:#ff6825;color:white;text-decoration:none;">Посетить другие мероприятия</a></p>
+                      <a href="http://localhost:5173/meetings/{{ meeting.id }}" style="width:100px;padding:12px;border:1px solid #ff6825;border-radius:5px;background:#ff6825;color:white;text-decoration: none">Перейти на страницу мероприятия</a></p>
                   </td>
                 </tr>
               </table>
