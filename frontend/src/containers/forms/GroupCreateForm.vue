@@ -59,18 +59,15 @@ import {default as CreateButton} from "@/components/buttons/OrangeButton.vue"
 </template>
 
 <script>
-import {createGroup, getCategories} from "@/services/groupApi";
+import {createGroup} from "@/services/groupApi";
 import {mapState} from "pinia";
 import {useAuthStore} from "@/stores/auth";
+import { useCategoriesStore } from "@/stores/categories";
 
 export default {
     name: "GroupCreateForm",
-    created() {
-        this.loadCategories()
-    },
     data() {
         return {
-            categories: [],
             message: '',
             form: {
                 title: '',
@@ -90,18 +87,12 @@ export default {
     },
     computed: {
         ...mapState(useAuthStore, ['user']),
+        ...mapState(useCategoriesStore, ['categories']),
     },
     methods: {
         onValidate() {
             this.form.sent = false
             this.form.submitted = this.form.errorsCount === 0
-        },
-        async loadCategories() {
-            let response = await getCategories()
-            response = response.data.results
-            for (let i = 0; i < response.length; i++) {
-                this.categories.push({label: response[i].title, value: response[i].id})
-            }
         },
         async submitForm() {
             const formData = {
@@ -116,7 +107,6 @@ export default {
             };
             const response = await createGroup(formData);
             if (response) {
-                console.log(response.id)
                 this.message = `Группа успешно создана.
                 Сейчас вы будете перенаправлены на страницу группы ${response.title}`
                 setTimeout(this.$router.push, 2000, {name: "group", params: {id: response.id}})
