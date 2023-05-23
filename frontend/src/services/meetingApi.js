@@ -31,6 +31,15 @@ export async function getUserMeeting(user_id) {
     }
 }
 
+export async function getGroupMeeting(group_id) {
+    try {
+        const response = await instance.get(`meetings?group=${group_id}`);
+        return response.data
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 
 export async function deleteMeeting(meeting_id) {
     try {

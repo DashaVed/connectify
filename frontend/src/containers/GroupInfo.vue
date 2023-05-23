@@ -1,6 +1,7 @@
 <script setup>
 import {default as EnterButton} from '@/components/buttons/OrangeButton.vue'
 import DisabledButton from '@/components/buttons/DisabledButton.vue'
+import GroupMeetings from "@/containers/GroupMeetings.vue";
 </script>
 
 <template>
@@ -29,7 +30,7 @@ import DisabledButton from '@/components/buttons/DisabledButton.vue'
                 <DisabledButton v-if="isJoined">Вы участник группы</DisabledButton>
                 <div class="title3 my8 text-right">Организатор</div>
                 <div class="body">{{ admin }}</div>
-                <div class="title3 my8 text-right">Участники ({{ countUsers }})</div>
+                <GroupMeetings />
             </div>
         </w-flex>
 
