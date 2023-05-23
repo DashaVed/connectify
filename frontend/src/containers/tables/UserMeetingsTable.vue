@@ -21,7 +21,7 @@ import formatDate from "@/services/services"
       }"
           @click="select">
         <th :colspan="table.headers.length"></th>
-        <td :class="py4" :colspan="table.headers.length">
+        <td class="px12 py4" :colspan="table.headers.length">
           <div class="box">
             <w-flex class="align-center">
               <router-link :to="{name: 'meeting', params: {id: item.meeting}}" class="title3 link">
@@ -32,6 +32,10 @@ import formatDate from "@/services/services"
               </w-tag>
             </w-flex>
             <div class="mt2">{{ formatDate(item.meeting_info.date, "D MMMM YYYY г. H:mm") }}</div>
+            <w-flex v-if="item.meeting_info.location" class="py2">
+                <w-icon color="deep-orange mr2 pt1">mdi mdi-city</w-icon>
+                <div>{{ item.meeting_info.location }}</div>
+              </w-flex>
           </div>
         </td>
       </tr>
@@ -66,6 +70,10 @@ import formatDate from "@/services/services"
                 </w-tag>
               </w-flex>
               <div class="mt2">{{ formatDate(item.meeting_info.date, "D MMMM YYYY г. H:mm") }}</div>
+              <w-flex v-if="item.meeting_info.location" class="py2">
+                <w-icon color="deep-orange mr2 pt1">mdi mdi-city</w-icon>
+                <div>{{ item.meeting_info.location }}</div>
+              </w-flex>
             </div>
             <div class="pt6">
               <w-icon color="indigo-deep6 mr6 pt1" md>mdi mdi-square-edit-outline</w-icon>
