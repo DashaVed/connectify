@@ -12,47 +12,52 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
         <RegisterButton route="/register">Зарегистрироваться</RegisterButton>
       </w-flex>
       <w-flex v-if="isAuth" class="xs9 align-center">
+        <w-form method="post">
           <w-input
             type="search"
             class="search"
             outline
             placeholder="Введите название или город"
-            inner-icon-right="wi-search">
+            inner-icon-right="wi-search"
+            v-model="search"
+            @click:inner-icon-right="submitForm">
           </w-input>
+        </w-form>
+
         <div class="spacer"></div>
-          <w-menu persistent align-right shadow custom class="mt6">
-            <template #activator="{ on }">
+        <w-menu persistent align-right shadow custom class="mt6">
+          <template #activator="{ on }">
                         <span v-on="on"
                               @click="isMenuShow = !isMenuShow"
                               class="title3 mr2">{{ user.name }}</span>
-              <w-icon xl
-                      v-on="on"
-                      v-if="!isMenuShow"
-                      @click="isMenuShow = !isMenuShow"
-                      class="pt1">mdi mdi-chevron-down
-              </w-icon>
-              <w-icon xl
-                      v-on="on"
-                      v-if="isMenuShow"
-                      @click="isMenuShow = !isMenuShow"
-                      color="deep-orange"
-                      class="pt1">mdi mdi-chevron-up
-              </w-icon>
-            </template>
-            <w-toolbar shadow content-class="pa10">
-              <w-grid columns="1">
-                <router-link :to="{name: 'user_meetings'}" class="menu-link">Ваши мероприятия</router-link>
-                <router-link :to="{name: 'user_groups'}" class="menu-link">Ваши группы</router-link>
-                <w-divider class="ma3" />
-                <router-link :to="{name: 'profile', params: {id: user.id}}" class="menu-link">Посмотреть
-                  профиль
-                </router-link>
-                <router-link :to="{name: 'account'}" class="menu-link">Настройки</router-link>
-                <w-divider class="ma3" />
-                <span @click="logoutUser" class="menu-link">Выйти</span>
-              </w-grid>
-            </w-toolbar>
-          </w-menu>
+            <w-icon xl
+                    v-on="on"
+                    v-if="!isMenuShow"
+                    @click="isMenuShow = !isMenuShow"
+                    class="pt1">mdi mdi-chevron-down
+            </w-icon>
+            <w-icon xl
+                    v-on="on"
+                    v-if="isMenuShow"
+                    @click="isMenuShow = !isMenuShow"
+                    color="deep-orange"
+                    class="pt1">mdi mdi-chevron-up
+            </w-icon>
+          </template>
+          <w-toolbar shadow content-class="pa10">
+            <w-grid columns="1">
+              <router-link :to="{name: 'user_meetings'}" class="menu-link">Ваши мероприятия</router-link>
+              <router-link :to="{name: 'user_groups'}" class="menu-link">Ваши группы</router-link>
+              <w-divider class="ma3" />
+              <router-link :to="{name: 'profile', params: {id: user.id}}" class="menu-link">Посмотреть
+                профиль
+              </router-link>
+              <router-link :to="{name: 'account'}" class="menu-link">Настройки</router-link>
+              <w-divider class="ma3" />
+              <span @click="logoutUser" class="menu-link">Выйти</span>
+            </w-grid>
+          </w-toolbar>
+        </w-menu>
 
       </w-flex>
     </HeaderOnlyWithTitle>
@@ -68,6 +73,7 @@ export default {
   name: "Navbar",
   data() {
     return {
+      search: "",
       isMenuShow: false
     };
   },
@@ -79,6 +85,9 @@ export default {
     async logoutUser() {
       this.logout();
       this.$router.push({ name: "main" });
+    },
+    async submitForm() {
+      this.$router.push({name: "search", query: {"search": this.search}})
     }
   }
 };
