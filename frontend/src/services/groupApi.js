@@ -5,6 +5,10 @@ export async function getCategories() {
     return await instance.get('/categories/')
 }
 
+export async function getGroups() {
+    return await instance.get('/groups/')
+}
+
 export async function createGroup(formData) {
     const response = await instance.post('/groups/', formData)
     if (response.status < 400) {

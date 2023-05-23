@@ -2,6 +2,7 @@
 
 import Navbar from "@/containers/Navbar.vue";
 import MeetingsTable from "@/containers/tables/MeetingsTable.vue";
+import GroupsTable from "@/containers/tables/GroupsTable.vue";
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import MeetingsTable from "@/containers/tables/MeetingsTable.vue";
         <MeetingsTable :search-data="queryParams" class="ma3" />
       </template>
       <template #item-content.2="{ item }">
+        <GroupsTable :search-data="queryParams" class="ma3" />
       </template>
     </w-tabs>
   </main>

@@ -38,7 +38,7 @@ import formatDate from "@/services/services";
       }"
         @click="select">
         <th :colspan="table.headers.length"></th>
-        <td class="pa4" :colspan="table.headers.length">
+        <td class="px12 py4" :colspan="table.headers.length">
           <div class="box">
             <w-flex class="align-center">
               <router-link :to="{name: 'meeting', params: {id: item.id}}" class="title3 link">
@@ -67,12 +67,12 @@ export default {
   data() {
     return {
       selectItems: [
-        { label: "Все", value: 'all' },
+        { label: "Все", value: "all" },
         { label: "Только онлайн", value: true },
         { label: "Только очно", value: false }
       ],
       filterDate: "",
-      filterType: 'all',
+      filterType: "all",
       table: {
         headers: [
           { label: "Название", key: "title" },
@@ -80,7 +80,7 @@ export default {
           { label: "Онлайн", key: "is_online" }
         ],
         meetings: []
-      },
+      }
     };
   },
   props: ["searchData"],
@@ -95,18 +95,22 @@ export default {
       this.table.meetings = response.data.results;
     },
     getFilteredItem(item) {
-      const search = this.searchData.toLowerCase()
+      const search = this.searchData.toLowerCase();
       let result = item.title.toLowerCase().includes(search) ||
-        item.location.toLowerCase().includes(search)
-      if (this.filterDate) {
-        const date = new Date(item.date).setHours(0, 0, 0, 0);
-        const filterDate = new Date(this.filterDate).setHours(0, 0, 0, 0)
-        result = date === filterDate
+        item.location.toLowerCase().includes(search);
+      if (result) {
+        if (this.filterDate) {
+          const date = new Date(item.date).setHours(0, 0, 0, 0);
+          const filterDate = new Date(this.filterDate).setHours(0, 0, 0, 0);
+          result = date === filterDate;
+        }
+        if (result) {
+          if (this.filterType !== "all") {
+            result = item.is_online === this.filterType;
+          }
+        }
       }
-      if (this.filterType !== 'all') {
-        result = item.is_online === this.filterType
-      }
-      return result
+      return result;
     }
   }
 };
