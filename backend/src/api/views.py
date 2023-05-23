@@ -18,7 +18,7 @@ class EnablePartialUpdateMixin:
         return super().update(request, *args, **kwargs)
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -98,9 +98,7 @@ class UserMeetingView(ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = MeetingParticipantSerializer(queryset, many=True)
-        meetings = Meeting.objects.all()
-        if self.request.query_params.get('date', None):
-            meetings = Meeting.objects.filter(date__gte=datetime.now())
+        meetings = Meeting.objects.filter(date__gte=datetime.now())
 
         for data in serializer.data:
             meeting = meetings.filter(id=data.get("meeting", None))
@@ -110,4 +108,8 @@ class UserMeetingView(ListAPIView):
                     "date": meeting[0].date,
                     "is_online": meeting[0].is_online
                 }
+                if meeting[0].location:
+                    data["meeting_info"]["location"] = meeting[0].location
+                else:
+                    data["meeting_info"]["location"] = ""
         return Response(serializer.data)

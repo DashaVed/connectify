@@ -6,30 +6,37 @@ import formatDate from "../services/services";
 <template>
   <w-card tile v-for="meeting in meetings" :key="meeting.id"
           class="my2" v-if="meetings.length">
-    <div class="title4">{{ meeting.title }}</div>
-    <w-flex class="justify-space-between">
-      <div v-if="meeting.location">
-        <w-icon color="deep-orange pb2">mdi mdi-city</w-icon>
-        {{ meeting.location }}
-      </div>
-      <w-tag v-else class="pt10" width="4em"
+    <w-flex class="align-center">
+      <div class="title4">{{ meeting.meeting_info.title }}</div>
+      <w-tag v-if="meeting.meeting_info.is_online" class="ml4 pt10" width="4em"
              height="1.5em">online
       </w-tag>
+    </w-flex>
+    <div class="mt2 mb4">
+      {{ formatDate(meeting.meeting_info.date, "D MMMM YYYY г. H:mm") }}
+    </div>
+    <w-flex class="justify-space-between">
+      <div v-if="meeting.meeting_info.location">
+        <w-icon color="deep-orange pb2">mdi mdi-city</w-icon>
+        {{ meeting.meeting_info.location }}
+      </div>
+      <div v-else></div>
       <router-link class="body link"
-                   :to="{name: 'meeting', params: {id: meeting.id}}">
+                   :to="{name: 'meeting', params: {id: meeting.meeting}}">
         Посмотреть
       </router-link>
     </w-flex>
   </w-card>
   <div v-if="!meetings.length" class="body mb8">
-    Нет совпадений на {{formatDate(dateInput)}}</div>
+    Нет совпадений
+  </div>
 
 </template>
 
 <script>
 export default {
   name: "MeetingCard",
-  props: ["meetings", "dateInput"]
+  props: ["meetings"]
 };
 </script>
 
@@ -42,7 +49,4 @@ export default {
   color: var(--color-text-active);
 }
 
-.link-route {
-  text-decoration: underline;
-}
 </style>

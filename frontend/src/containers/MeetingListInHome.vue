@@ -9,18 +9,17 @@ import MeetingCard from "@/components/MeetingCard.vue";
   <div v-if="isLoading">
     <div class="box today" v-if="!dateInput || dateInput === new Date()">
       <div class="title3 my4">Сегодня</div>
-      <MeetingCard :meetings="todayMeetings" :date-input="dateInput" />
+      <MeetingCard :meetings="todayMeetings" />
       <div class="box days">
         <div class="title3 my4">Ближайшие дни</div>
-        <MeetingCard :meetings="meetings" :date-input="dateInput" />
+        <MeetingCard :meetings="meetings" />
       </div>
     </div>
 
     <div class="box next-days" v-else>
-      <div class="title3 my4">{{ formatDate(dateInput, "D MMMM YYYY г. h:mm") }}</div>
-      <MeetingCard :meetings="getDayMeeting()" :date-input="dateInput" />
+      <div class="title3 my4">{{ formatDate(dateInput) }}</div>
+      <MeetingCard :meetings="getDayMeeting()" />
     </div>
-
 
   </div>
 </template>
@@ -50,7 +49,7 @@ export default {
     getDayMeeting() {
       let meetings = [];
       for (const meeting of this.meetings) {
-        const date = new Date(meeting.date).setHours(0, 0, 0, 0);
+        const date = new Date(meeting.meeting_info.date).setHours(0, 0, 0, 0);
         if (date === this.dateInput.setHours(0, 0, 0, 0)) {
           meetings.push(meeting);
         }
@@ -61,13 +60,18 @@ export default {
       this.isLoading = false;
       const response = await getUserMeeting(this.user.id);
       const today = new Date().setHours(0, 0, 0, 0);
-      if (response.data) {
-        for (const meeting of response.data.results) {
-          const date = new Date(meeting.date).setHours(0, 0, 0, 0);
-          if (date === today) {
-            this.todayMeetings.push(meeting);
-          } else {
-            this.meetings.push(meeting);
+      if (response) {
+        for (const meeting of response) {
+          if (meeting.role === "admin") {
+            continue;
+          }
+          if (meeting.hasOwnProperty("meeting_info")) {
+            const date = new Date(meeting.meeting_info.date).setHours(0, 0, 0, 0);
+            if (date === today) {
+              this.todayMeetings.push(meeting);
+            } else {
+              this.meetings.push(meeting);
+            }
           }
         }
       }

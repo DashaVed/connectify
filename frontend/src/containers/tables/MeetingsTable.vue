@@ -48,7 +48,7 @@ import formatDate from "@/services/services";
                      height="1.5em">online
               </w-tag>
             </w-flex>
-            <div class="mt2">{{ formatDate(item.date, "D MMMM YYYY г. h:mm") }}</div>
+            <div class="mt2">{{ formatDate(item.date, "D MMMM YYYY г. H:mm") }}</div>
           </div>
         </td>
       </tr>

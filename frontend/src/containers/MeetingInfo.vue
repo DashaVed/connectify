@@ -10,7 +10,7 @@ import DisabledButton from '@/components/buttons/DisabledButton.vue'
             <div class="box ml12 xs6">
                 <div class="title1 text-bold">{{ meeting.title }}</div>
                 <div class="title3 mt4 mb8">
-                    {{ formatDate(this.meeting.date) }}
+                    {{ formatDate(meeting.date, "D MMMM YYYY г. H:mm") }}
                 </div>
                 <div v-if="meeting.is_online">
                     <w-icon color="deep-orange pb1 mr4" lg>mdi mdi-video</w-icon>
