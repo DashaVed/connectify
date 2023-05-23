@@ -20,6 +20,7 @@ import RegisterButton from "@/components/buttons/OrangeButton.vue";
             placeholder="Введите название или город"
             inner-icon-right="wi-search"
             v-model="search"
+            @keyup.enter="submitForm"
             @click:inner-icon-right="submitForm">
           </w-input>
         </w-form>
