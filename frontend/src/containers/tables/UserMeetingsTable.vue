@@ -31,7 +31,7 @@ import formatDate from "@/services/services"
                      height="1.5em">online
               </w-tag>
             </w-flex>
-            <div class="mt2">{{ formatDate(item.meeting_info.date) }}</div>
+            <div class="mt2">{{ formatDate(item.meeting_info.date, "D MMMM YYYY г. h:mm") }}</div>
           </div>
         </td>
       </tr>
@@ -65,7 +65,7 @@ import formatDate from "@/services/services"
                        height="1.5em">online
                 </w-tag>
               </w-flex>
-              <div class="mt2">{{ formatDate(item.meeting_info.date) }}</div>
+              <div class="mt2">{{ formatDate(item.meeting_info.date, "D MMMM YYYY г. h:mm") }}</div>
             </div>
             <div class="pt6">
               <w-icon color="indigo-deep6 mr6 pt1" md>mdi mdi-square-edit-outline</w-icon>

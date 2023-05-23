@@ -17,7 +17,7 @@ import MeetingCard from "@/components/MeetingCard.vue";
     </div>
 
     <div class="box next-days" v-else>
-      <div class="title3 my4">{{ formatDate(dateInput) }}</div>
+      <div class="title3 my4">{{ formatDate(dateInput, "D MMMM YYYY г. h:mm") }}</div>
       <MeetingCard :meetings="getDayMeeting()" :date-input="dateInput" />
     </div>
 

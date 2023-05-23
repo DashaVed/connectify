@@ -104,8 +104,4 @@ export default {
   color: var(--color-text-active);
 }
 
-.search {
-  max-width: 400px;
-}
-
 </style>

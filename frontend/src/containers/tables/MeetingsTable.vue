@@ -113,5 +113,11 @@ export default {
 </script>
 
 <style scoped>
+.link {
+  color: var(--color-text);
+}
 
+.link:hover, .link:focus, .link:active {
+  color: var(--color-text-active);
+}
 </style>
