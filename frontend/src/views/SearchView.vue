@@ -6,7 +6,7 @@ import MeetingsTable from "@/containers/tables/MeetingsTable.vue";
 
 <template>
   <Navbar />
-  <main class="grow pa4">
+  <main class="grow pa4 mt4">
     <w-tabs :items="tabs">
       <template #item-title="{ item }">
         <span class="title4">{{ item.title }}</span>

@@ -1,17 +1,24 @@
 <script setup>
-
 import formatDate from "@/services/services";
 </script>
 
 <template>
-  <w-flex wrap class="filter-panel my6">
-     <w-input
-    type="date"
-    v-model="filterDate"
-    class="xs2"
-    outline
-    :validators="[validators.dateValidate]">
-  </w-input>
+  <w-flex wrap gap="2" class="filter-panel my6">
+    <w-input
+      type="date"
+      label="Дата проведения"
+      v-model="filterDate"
+      class="xs2"
+      outline>
+    </w-input>
+    <w-select
+      :items="selectItems"
+      v-model="filterType"
+      outline
+      placeholder="Выберите тип мероприятия"
+      label="Тип мероприятия"
+      class="xs2"></w-select>
+    <div class="xs6"></div>
   </w-flex>
 
   <w-table
@@ -59,7 +66,13 @@ export default {
   },
   data() {
     return {
+      selectItems: [
+        { label: "Все", value: 'all' },
+        { label: "Только онлайн", value: true },
+        { label: "Только очно", value: false }
+      ],
       filterDate: "",
+      filterType: 'all',
       table: {
         headers: [
           { label: "Название", key: "title" },
@@ -68,19 +81,12 @@ export default {
         ],
         meetings: []
       },
-      validators: {
-                dateValidate: (value) => this.dateIsValid(value) === true ||
-                    'Нeправильная дата. Она должна быть формата mm-dd-yyyy',
-            }
     };
   },
   props: ["searchData"],
   computed: {
     filterMeetings() {
-      return this.table.meetings.filter((item) =>
-        item.title.toLowerCase().includes(this.searchData.toLowerCase()) ||
-        item.location.toLowerCase().includes(this.searchData.toLowerCase())
-      );
+      return this.table.meetings.filter((item) => this.getFilteredItem(item) === true);
     }
   },
   methods: {
@@ -88,13 +94,19 @@ export default {
       const response = await getMeetings();
       this.table.meetings = response.data.results;
     },
-    dateIsValid(dateStr) {
-      const regex = /^\d{4}-\d{2}-\d{2}$/;
-      if (dateStr.match(regex) === null) {
-        this.form.valid = false;
-        return false;
+    getFilteredItem(item) {
+      const search = this.searchData.toLowerCase()
+      let result = item.title.toLowerCase().includes(search) ||
+        item.location.toLowerCase().includes(search)
+      if (this.filterDate) {
+        const date = new Date(item.date).setHours(0, 0, 0, 0);
+        const filterDate = new Date(this.filterDate).setHours(0, 0, 0, 0)
+        result = date === filterDate
       }
-      return true;
+      if (this.filterType !== 'all') {
+        result = item.is_online === this.filterType
+      }
+      return result
     }
   }
 };
