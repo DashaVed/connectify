@@ -52,5 +52,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, user_id, room, message):
-        user = get_object_or_404(User, id=user_id)
+        sender_id = self.room_name.replace("-", "").replace(user_id, "")
+        user = get_object_or_404(User, id=sender_id)
         Chat.objects.create(sender=user, message=message, room=room)
