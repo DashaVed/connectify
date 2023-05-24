@@ -28,7 +28,7 @@ import GroupMeetings from "@/containers/GroupMeetings.vue";
       </div>
       <div class="box mr12">
         <EnterButton v-if="!isJoined" @click="addUser">Вступить в группу</EnterButton>
-        <ExitButton v-else-if="isJoined && user.id!==admin.user"
+        <ExitButton v-else-if="isJoined && user.id!==admin.id"
                     question="Покинуть группу?"
                     @confirm="exitUser">Вы участник группы
         </ExitButton>

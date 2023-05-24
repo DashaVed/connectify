@@ -50,8 +50,12 @@ export async function deleteMeeting(meeting_id) {
     }
 }
 
-
 export async function addUserToMeeting(data, meeting_id) {
     const response = await instance.put(`meetings/${meeting_id}/`, data);
+    return response.status
+}
+
+export async function deleteUserFromMeeting(participantId) {
+    const response = await instance.delete(`meeting_participants/${participantId}`);
     return response.status
 }
