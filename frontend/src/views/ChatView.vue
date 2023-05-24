@@ -14,7 +14,11 @@ import Navbar from "@/containers/Navbar.vue";
         </w-toolbar>
       </template>
       <w-card class="chat-messages mt4">
-        <p>{{ messages }}</p>
+        <w-flex column v-for="message in messagesHistory">
+          <div class="text-right mr2" v-if="parseInt(message.user_id) !== user.id">
+            {{message.message}}</div>
+          <div class="text-left ml2" v-else>{{message.message}}</div>
+        </w-flex>
       </w-card>
             <w-form @submit.prevent="sendMessage">
         <w-flex class="mt4 align-center justify-space-between">
@@ -44,12 +48,12 @@ export default {
   data() {
     return {
       message: null,
-      messages: "",
+      messagesHistory: [],
       username: this.$route.query.username
     };
   },
   computed: {
-    ...mapState(useAuthStore, ["user"])
+    ...mapState(useAuthStore, ["user"]),
   },
   methods: {
     getRoomId() {
@@ -69,8 +73,8 @@ export default {
     connect() {
 
       this.send = initChat(this.getRoomId(), (message) => {
-        this.username = message.username;
-        this.messages += message.message + "\n";
+        console.log(message)
+        this.messagesHistory.push(message);
       });
     },
     sendMessage() {
