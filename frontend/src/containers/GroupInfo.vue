@@ -28,13 +28,14 @@ import GroupMeetings from "@/containers/GroupMeetings.vue";
       </div>
       <div class="box mr12">
         <EnterButton v-if="!isJoined" @click="addUser">Вступить в группу</EnterButton>
-        <ExitButton v-else-if="isJoined && user.id!==admin"
+        <ExitButton v-else-if="isJoined && user.id!==admin.user"
                     question="Покинуть группу?"
                     @confirm="exitUser">Вы участник группы
         </ExitButton>
         <EnterButton disabled v-else>Вы администратор</EnterButton>
         <div class="title3 my8 text-right">Организатор</div>
-        <div class="body">{{ admin }}</div>
+        <router-link :to="{name: 'profile', params: {id: admin.id}}">
+          <div class="body link text-right">{{ admin.name }}</div></router-link>
         <GroupMeetings />
       </div>
     </w-flex>
@@ -72,7 +73,7 @@ export default {
     },
     isJoined() {
       for (const user of this.group.users) {
-        if (user.user === this.user.id) {
+        if (user.user.id === this.user.id) {
           return true;
         }
       }
@@ -108,7 +109,7 @@ export default {
     async exitUser() {
       let groupParticipantId;
       for (const participant of this.group.users) {
-        if (participant.user === this.user.id) {
+        if (participant.user.id === this.user.id) {
           groupParticipantId = participant.id;
         }
       }
@@ -124,5 +125,12 @@ export default {
 <style scoped>
 .categories-content {
   width: 500px;
+}
+.link {
+  color: var(--color-text);
+}
+
+.link:hover, .link:focus, .link:active {
+  color: var(--color-text-active);
 }
 </style>

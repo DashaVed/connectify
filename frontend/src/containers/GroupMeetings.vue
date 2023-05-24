@@ -5,7 +5,7 @@ import formatDate from "../services/services";
 
 <template>
   <div class="title3 my8 text-right">Текущие мероприятия</div>
-  <w-flex column>
+  <w-flex v-if="meetings.length !== 0" column>
     <w-card tile v-for="meeting in meetings" class="meetings-content my3">
       <div class="title4 mb2">{{ meeting.title }}</div>
       <div>{{formatDate(meeting.date, "D MMMM YYYY г. H:mm")}}</div>
@@ -20,6 +20,7 @@ import formatDate from "../services/services";
       </w-flex>
     </w-card>
   </w-flex>
+  <div class="body pl5" style="width:300px;" v-else>На данный момент в этой группу нет мероприятий</div>
 
 </template>
 
@@ -42,7 +43,6 @@ export default {
       if (response.results) {
         this.meetings = response.results;
       }
-      console.log(this.meetings);
     }
   }
 };

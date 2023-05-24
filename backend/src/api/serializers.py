@@ -38,6 +38,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class UserInGroupSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
 
     class Meta:
         model = GroupParticipant
@@ -142,10 +143,11 @@ class MeetingChangeSerializer(serializers.ModelSerializer):
 
 
 class UserInMeetingSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
 
     class Meta:
         model = MeetingParticipant
-        fields = ['role', 'user']
+        fields = ['id', 'role', 'user']
 
 
 class GroupWithoutUser(serializers.ModelSerializer):
@@ -173,6 +175,8 @@ class MeetingSerializer(serializers.ModelSerializer):
 
 
 class MeetingParticipantSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
     class Meta:
         model = MeetingParticipant
         fields = "__all__"
