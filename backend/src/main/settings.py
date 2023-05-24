@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "daphne",
     "channels",
     "channels_postgres",
+    'chat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -103,6 +104,8 @@ DATABASES = {
 CHANNEL_LAYERS = {
     "default": {"BACKEND": "channels_postgres.core.PostgresChannelLayer", "CONFIG": default_database},
 }
+
+ASGI_APPLICATION = "main.asgi.application"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
