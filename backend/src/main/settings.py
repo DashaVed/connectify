@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    "channels",
+    "channels_postgres",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,15 +86,22 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+default_database = {
+    "ENGINE": "django.db.backends.postgresql",
+    "NAME": os.environ.get("DB_NAME", "connectify"),
+    "USER": os.environ.get("DB_USER", "connectify"),
+    "PASSWORD": os.environ.get("DB_PASSWORD", "connectify"),
+    "HOST": os.environ.get("DB_HOST", "localhost"),
+    "PORT": int(os.environ.get("DB_PORT", 5432)),
+}
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME", "connectify"),
-        "USER": os.environ.get("DB_USER", "connectify"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "connectify"),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
-        "PORT": int(os.environ.get("DB_PORT", 5432)),
-    }
+    "default": default_database,
+    "channels_postgres": default_database,
+}
+
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels_postgres.core.PostgresChannelLayer", "CONFIG": default_database},
 }
 
 # Password validation
