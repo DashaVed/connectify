@@ -14,7 +14,6 @@ export async function createGroup(formData) {
     if (response.status < 400) {
         return response.data
     }
-    console.log(response)
     throw new Error("Не получилось создать группу, попробуйте еще раз");
 }
 
@@ -49,5 +48,10 @@ export async function deleteGroup(group_id) {
 
 export async function addUserToGroup(data, group_id) {
     const response = await instance.put(`groups/${group_id}/`, data);
+    return response.status
+}
+
+export async function deleteUserFromGroup(groupParticipantId) {
+    const response = await instance.delete(`group_participants/${groupParticipantId}`);
     return response.status
 }

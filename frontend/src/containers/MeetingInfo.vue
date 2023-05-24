@@ -1,7 +1,7 @@
 <script setup>
 import formatDate from "@/services/services"
 import {default as EnterButton} from '@/components/buttons/OrangeButton.vue'
-import DisabledButton from '@/components/buttons/DisabledButton.vue'
+import DisabledButton from '@/components/buttons/ExitButton.vue'
 </script>
 
 <template>

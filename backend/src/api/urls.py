@@ -19,8 +19,8 @@ urlpatterns = [
                   path('categories/', CategoryView.as_view(), name="category"),
                   path('users/<int:pk>/groups', UserGroupView.as_view(), name="user_groups"),
                   path('users/<int:pk>/meetings', UserMeetingView.as_view(), name="user_meetings"),
-                  path('group_participants/<int:pk>', DeleteGroupParticipantView.as_view(),
+                  path('group_participants/<int:pk>/', DeleteGroupParticipantView.as_view(),
                        name="exit_user_from_group"),
-                  path('meeting_participants/<int:pk>', DeleteMeetingParticipantView.as_view(),
+                  path('meeting_participants/<int:pk>/', DeleteMeetingParticipantView.as_view(),
                        name="exit_user_from_meeting"),
               ] + router.urls
