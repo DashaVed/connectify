@@ -1,5 +1,5 @@
 from datetime import datetime
-from rest_framework.generics import UpdateAPIView, ListAPIView, get_object_or_404
+from rest_framework.generics import UpdateAPIView, ListAPIView, get_object_or_404, DestroyAPIView
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -116,3 +116,13 @@ class UserMeetingView(ListAPIView):
                 else:
                     data["meeting_info"]["location"] = ""
         return Response(serializer.data)
+
+
+class DeleteGroupParticipantView(DestroyAPIView):
+    serializer_class = GroupParticipantSerializer
+    queryset = GroupParticipant.objects.all()
+
+
+class DeleteMeetingParticipantView(DestroyAPIView):
+    serializer_class = MeetingParticipantSerializer
+    queryset = MeetingParticipant.objects.all()

@@ -41,7 +41,7 @@ class UserInGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GroupParticipant
-        fields = ['role', 'user']
+        fields = ['id', 'role', 'user']
 
 
 class GroupSerializer(serializers.ModelSerializer):
