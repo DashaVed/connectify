@@ -88,6 +88,11 @@ const router = createRouter({
       name: "notFound",
       component: () => import("../views/NotFound.vue"),
       meta: { unauthorizedAccess: true }
+    },
+    {
+      path: "/chat/:id(\\d+)",
+      name: "chat",
+      component: () => import("../views/ChatView.vue")
     }
   ]
 });
