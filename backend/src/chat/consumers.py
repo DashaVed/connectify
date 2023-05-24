@@ -31,7 +31,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
-                'user_id': user_id,
+                'user_id': self.get_sender_id(user_id),
             }
         )
 
@@ -41,7 +41,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.send(text_data=json.dumps({
             'message': message,
-            'user_id': user_id
+            'user_id': self.get_sender_id(user_id)
         }))
 
     async def disconnect(self, code):
@@ -50,8 +50,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
+    def get_sender_id(self, user_id):
+        return self.room_name.replace("-", "").replace(user_id, "")
+
     @database_sync_to_async
     def save_message(self, user_id, room, message):
-        sender_id = self.room_name.replace("-", "").replace(user_id, "")
-        user = get_object_or_404(User, id=sender_id)
+        user = get_object_or_404(User, id=self.get_sender_id(user_id))
         Chat.objects.create(sender=user, message=message, room=room)

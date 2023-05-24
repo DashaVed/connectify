@@ -15,7 +15,7 @@ import Navbar from "@/containers/Navbar.vue";
       </template>
       <w-card class="chat-messages mt4">
         <w-flex column v-for="message in messagesHistory">
-          <div class="text-right mr2" v-if="parseInt(message.user_id) !== user.id">
+          <div class="text-right mr2" v-if="parseInt(message.user_id) === user.id">
             {{message.message}}</div>
           <div class="text-left ml2" v-else>{{message.message}}</div>
         </w-flex>
@@ -39,10 +39,12 @@ import Navbar from "@/containers/Navbar.vue";
 import { initChat } from "@/services/websockets";
 import { useAuthStore } from "@/stores/auth";
 import { mapState } from "pinia";
+import { getChatHistory } from "@/services/chatApi";
 
 export default {
   name: "ChatView",
   async created() {
+    await this.loadChatHistory();
     await this.connect();
   },
   data() {
@@ -70,10 +72,17 @@ export default {
       }
       return room;
     },
+    async loadChatHistory() {
+      const response = await getChatHistory('chat_' + this.getRoomId())
+      if (response.data.results) {
+        for (const message of response.data.results) {
+          this.messagesHistory.push({ user_id: message.sender, message: message.message })
+        }
+      }
+    },
     connect() {
 
       this.send = initChat(this.getRoomId(), (message) => {
-        console.log(message)
         this.messagesHistory.push(message);
       });
     },
