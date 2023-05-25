@@ -1,3 +1,6 @@
+![Процент покрытия тестами](https://github.com/DashaVed/connectify/actions/workflows/tests.yml/badge.svg)
+
+
 # Connectify
 
 Connectify - это сервис, который помогает людям искать единомышленников, проводить тематические встречи и реализовывать свой потенциал.
