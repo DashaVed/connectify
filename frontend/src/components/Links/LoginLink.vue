@@ -1,5 +1,5 @@
 <template>
-<a href="/login" class="login-button blue-dark6">Войти</a>
+<router-link :to="{name: 'login'}" class="login-button blue-dark6">Войти</router-link>
 </template>
 
 <script>
