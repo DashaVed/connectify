@@ -51,7 +51,7 @@ import ExitButton from "@/components/buttons/ExitButton.vue";
         </w-card>
         <div class="title3 my8 text-right">Организатор</div>
         <router-link :to="{name: 'profile', params: {id: admin.id}}">
-          <div class="body link text-right" style="font-size: 20px">{{ admin.name }}</div>
+          <div class="body link text-right" style="font-size: 16px">{{ admin.name }}</div>
         </router-link>
         <router-link :to="{name: 'chat', params: {id: admin.id}, query: {username: admin.name}}">
           <div class="body link text-right" style="font-size: 16px">Написать</div>
