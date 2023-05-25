@@ -1,3 +1,4 @@
+{% load tz %}
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -23,7 +24,8 @@
                 <tr>
                   <td style="padding:0 0 36px 0;color:#032540;">
                     <h1 style="font-size:24px;margin:0 0 28px 0;font-family:Arial,sans-serif;">Организатор решил отменить встречу - {{ meeting.title }}</h1>
-                    <p style="margin:12px 0 40px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Встреча должна была пройти {{ meeting.date }}</p>
+                    <p style="margin:12px 0 40px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Встреча должна была пройти
+                      {{ meeting.date|localtime|date:"d F Y" }} в {{ meeting.date|localtime|time:"H:i" }}</p>
                     <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;;text-align:center;">
                       <a href="http://localhost:5173/" style="width:100px;padding:12px;border:1px solid #ff6825;border-radius:5px;background:#ff6825;color:white;text-decoration:none;">Посетить другие мероприятия</a></p>
                   </td>

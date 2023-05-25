@@ -1,6 +1,7 @@
 from datetime import datetime
 from rest_framework.generics import UpdateAPIView, ListAPIView, get_object_or_404, DestroyAPIView
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers import UserSerializer, GroupSerializer, GroupChangeSerializer, ChangePasswordSerializer, \
@@ -21,6 +22,7 @@ class EnablePartialUpdateMixin:
 class UserViewSet(EnablePartialUpdateMixin, viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ChangePasswordView(UpdateAPIView):
@@ -49,6 +51,7 @@ class CategoryView(ListAPIView):
 
 class UserGroupView(ListAPIView):
     serializer_class = GroupParticipantSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user_id = self.request.parser_context['kwargs']['pk']
