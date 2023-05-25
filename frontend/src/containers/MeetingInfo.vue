@@ -44,13 +44,17 @@ import ExitButton from "@/components/buttons/ExitButton.vue";
               <w-icon color="deep-orange pb2">mdi mdi-city</w-icon>
               {{ meeting.group.city }}
             </div>
-            <router-link class="body link" :to="{name: 'group', params: {id: meeting.group.id}}">Посмотреть
+            <router-link class="body link" :to="{name: 'group',
+            params: {id: meeting.group.id}}">Посмотреть
             </router-link>
           </w-flex>
         </w-card>
         <div class="title3 my8 text-right">Организатор</div>
         <router-link :to="{name: 'profile', params: {id: admin.id}}">
           <div class="body link text-right" style="font-size: 20px">{{ admin.name }}</div>
+        </router-link>
+        <router-link :to="{name: 'chat', params: {id: admin.id}, query: {username: admin.name}}">
+          <div class="body link text-right" style="font-size: 16px">Написать</div>
         </router-link>
       </div>
     </w-flex>
@@ -112,7 +116,7 @@ export default {
       };
       const responseStatus = await addUserToMeeting(meeting, this.$route.params.id);
       if (responseStatus < 400) {
-        await this.loadMeeting()
+        await this.loadMeeting();
       } else {
         console.log("error");
       }
